@@ -1,0 +1,26 @@
+{
+  "name": "2800-2023-dtc14",
+  "version": "1.0.0",
+  "description": "This the dev branch :/",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cassidy-Boilley/2800-2023-DTC14.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cassidy-Boilley/2800-2023-DTC14/issues"
+  },
+  "homepage": "https://github.com/Cassidy-Boilley/2800-2023-DTC14#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.0.3",
+    "express-mongoose": "^0.1.0",
+    "express-session": "^1.17.3"
+  }
+}
