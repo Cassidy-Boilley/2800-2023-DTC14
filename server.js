@@ -1,7 +1,6 @@
+const express = require('express');
 const mongoose = require('mongoose');
 const app = require('./index.js');
-
-
 
 main().catch(err => console.log(err));
 
