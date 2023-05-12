@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const historyItemModel = require('./models/historyItem.js');
+const historyItemModel = require('./models/historyItem');
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -11,7 +11,7 @@ app.use(express.static('public'));
 app.get('/history', async (req, res) => {
     const result = await historyItemModel.find({});
     // TODO: Temporary authentication code, update later
-    res.render('history.ejs', {historyItems: result, authenticated: true});
+    res.render('history.ejs', {historyItemList: result, authenticated: true});
 });
 
 module.exports = app;
