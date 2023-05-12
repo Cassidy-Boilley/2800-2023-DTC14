@@ -61,4 +61,12 @@ app.post('/save', async (req, res) => {
     }
 });
 
+app.post('/delete', async (req, res) => {
+    const mealId = req.body;
+    await mealplanCollection.deleteOne({
+        _id: mealId.mealId
+    });
+    res.redirect('/meal-plan');
+});
+
 module.exports = app;
