@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const app = require('./index.js');
+const app = require('./recommendations.js');
 const dotenv = require('dotenv')
 dotenv.config();
 
