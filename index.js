@@ -178,8 +178,13 @@ app.post("/password-recovery", async (req, res) => {
         email: inputEmail.email
     });
 
-    if (inputEmail.email === result.email) {
+    if (inputEmail.email === result?.email) {
         res.redirect("/password-reset");
+    } else {
+        res.send(`
+        <h1> Invalid email. </h1>
+        <a href='/password-recovery'> Try again. </a>
+        `);
     }
 });
 
