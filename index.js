@@ -36,7 +36,7 @@ app.use(session({
 app.get('/', (req, res) => {
     // TODO: CHANGE AUTHENTICATED CONDITION WHEN IMPLEMENTATION IS DONE
     res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED });
-    }
+}
 );
 
 /**
@@ -81,6 +81,7 @@ app.post('/signup', async (req, res) => {
                 name: req.body.name,
                 email: req.body.email,
                 password: newUserPassword,
+                city: ""
             });
             await newUser.save();
             res.redirect('/login');
@@ -205,6 +206,32 @@ app.post("/password-reset", async (req, res) => {
             { $set: { password: hashedPassword } }
         );
         res.redirect("/login");
+    } catch (error) {
+        res.send("An error happened, please try again");
+    }
+});
+
+app.get("/accountsettings", async (req, res) => {
+    const user = await usersModel.findOne({
+        name: req.session.loggedName
+    });
+    console.log(user);
+    res.render('accountsettings.ejs', { user: user });
+});
+
+app.post("/update-profile", async (req, res) => {
+    const profileInfo = req.body;
+    console.log(profileInfo);
+
+    try {
+        const result = await usersModel.updateOne(
+            { name: req.session.loggedName },
+            { $set: { 
+                city: profileInfo.city, 
+                email: profileInfo.email, 
+                name: profileInfo.name } }
+        );
+        res.redirect("/accountsettings");
     } catch (error) {
         res.send("An error happened, please try again");
     }
