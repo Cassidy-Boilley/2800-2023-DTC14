@@ -170,4 +170,17 @@ app.get("/password-recovery", (req, res) => {
     res.render('password-recovery.ejs');
 });
 
+app.post("/password-recovery", async (req, res) => {
+    const inputEmail = req.body;
+    console.log(inputEmail.email);
+
+    const result = await usersModel.findOne({
+        email: inputEmail.email
+    });
+
+    if (inputEmail.email === result.email) {
+        res.redirect("/password-reset");
+    }
+});
+
 module.exports = app;
