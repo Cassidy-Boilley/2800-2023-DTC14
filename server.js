@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 // TODO: Find out how to use multiple .js files for app
 // For now, just update the app constant
-const app = require('./history.js');
+const app = require('./index.js');
 const dotenv = require('dotenv');
 dotenv.config();
 
