@@ -192,6 +192,13 @@ app.get("/password-reset", (req, res) => {
     res.render('password-reset.ejs');
 });
 
+/**
+ * The following block of code is from a COMP2537 assignment, with some modifications.
+ * The modifications include the following: TODO: update modifications
+ * - Change app.post request
+ * - Update password instead of type
+ * - Redirect to login page on success
+ */
 app.post("/password-reset", async (req, res) => {
     const inputEmail = req.body;
     const inputPassword = req.body;
@@ -215,10 +222,16 @@ app.get("/accountsettings", async (req, res) => {
     const user = await usersModel.findOne({
         name: req.session.loggedName
     });
-    console.log(user);
     res.render('accountsettings.ejs', { user: user });
 });
 
+/**
+ * The following block of code is from a COMP2537 assignment, with some modifications.
+ * The modifications include the following: TODO: update modifications
+ * - Change app.post request
+ * - Update 3 fields instead of 1
+ * - Redirect to account settings page on success
+ */
 app.post("/update-profile", async (req, res) => {
     const profileInfo = req.body;
     console.log(profileInfo);
