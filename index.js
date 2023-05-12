@@ -11,8 +11,4 @@ app.get('/', (req, res) => {
     }
 );
 
-app.get('/meal-plan', (req, res) => {
-    res.render('meal-plan.ejs', { authenticated: true });
-});
-
 module.exports = app;
