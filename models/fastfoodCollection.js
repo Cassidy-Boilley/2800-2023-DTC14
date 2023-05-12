@@ -16,7 +16,8 @@ const databaseSchema = new mongoose.Schema({
     vit_a: Number,
     vit_c: Number,
     calcium: Number,
-    salad: String
+    salad: String,
+    vegan: String,
 },
     { collection: 'fastfood' });
 

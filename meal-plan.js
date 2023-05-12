@@ -52,7 +52,8 @@ app.post('/save', async (req, res) => {
         vit_a: result.vit_a,
         vit_c:  result.vit_c,
         calcium: result.calcium,
-        salad: result.salad
+        salad: result.salad,
+        vegan: result.vegan,
     });
     await addToMealPlan.save();
     res.redirect('/fast-food');
