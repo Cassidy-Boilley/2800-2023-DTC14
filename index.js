@@ -161,4 +161,13 @@ app.post('/login', async (req, res) => {
     }
 });
 
+app.post("/logout", (req, res) => {
+    req.session.destroy();
+    res.redirect("/");
+});
+
+app.get("/password-recovery", (req, res) => {
+    res.render('password-recovery.ejs');
+});
+
 module.exports = app;
