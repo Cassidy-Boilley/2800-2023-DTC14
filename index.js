@@ -172,7 +172,6 @@ app.get("/password-recovery", (req, res) => {
 
 app.post("/password-recovery", async (req, res) => {
     const inputEmail = req.body;
-    console.log(inputEmail.email);
 
     const result = await usersModel.findOne({
         email: inputEmail.email
@@ -185,6 +184,29 @@ app.post("/password-recovery", async (req, res) => {
         <h1> Invalid email. </h1>
         <a href='/password-recovery'> Try again. </a>
         `);
+    }
+});
+
+app.get("/password-reset", (req, res) => {
+    res.render('password-reset.ejs');
+});
+
+app.post("/password-reset", async (req, res) => {
+    const inputEmail = req.body;
+    const inputPassword = req.body;
+    const hashedPassword = await bcrypt.hash(inputPassword.password, 10);
+
+    console.log(inputEmail);
+    console.log(inputPassword.password);
+
+    try {
+        const result = await usersModel.updateOne(
+            { email: inputEmail.email },
+            { $set: { password: hashedPassword } }
+        );
+        res.redirect("/login");
+    } catch (error) {
+        res.send("An error happened, please try again");
     }
 });
 
