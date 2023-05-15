@@ -7,6 +7,11 @@ const Joi = require('joi');
 const dotenv = require('dotenv');
 dotenv.config();
 var MongoDBStore = require('connect-mongodb-session')(session);
+const { Configuration, OpenAIApi } = require("openai");
+const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -218,11 +223,27 @@ app.post("/password-reset", async (req, res) => {
     }
 });
 
+app.post("/sendPrompt", (req, res) => {
+    req.session.destroy();
+    res.redirect("/");
+});
+
 app.get("/accountsettings", async (req, res) => {
     const user = await usersModel.findOne({
         name: req.session.loggedName
     });
     res.render('accountsettings.ejs', { user: user });
+});
+
+app.get("/chat", async (req, res) => {
+    async function runCompletion() {
+        const completion = await openai.createCompletion({
+            model: "text-davinci-003",
+            prompt: "How are you today?",
+        });
+        res.render('chat.ejs', { message : completion.data.choices[0].text });
+    }
+    runCompletion();
 });
 
 /**
