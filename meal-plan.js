@@ -5,6 +5,14 @@ const app = express();
 const fastfoodCollection = require('./models/fastfoodCollection.js');
 const mealplanCollection = require('./models/mealplanCollection.js');
 const ejs = require('ejs');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const { Configuration, OpenAIApi } = require("openai");
+const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -23,7 +31,21 @@ app.get('/fast-food', async (req, res) => {
 
 app.get('/meal-plan', async (req, res) => {
     const result = await mealplanCollection.find();
-    res.render('meal-plan.ejs', { authenticated: true, mealplan: result });
+    console.log(result);
+    
+    const startPrompt = "Write a paragraph of less than 120 words which greets a user named Bob, tells him that" +
+        "the following list is his meal plan, and summarizes the list"
+
+    async function runCompletion() {
+        const completion = await openai.createCompletion({
+            model: "text-davinci-003",
+            prompt: startPrompt + result,
+            max_tokens: 150
+        });
+        console.log(completion.data.choices[0].text)
+        res.render('meal-plan.ejs', { authenticated: true, mealplan: result, message: completion.data.choices[0].text });
+    }
+    runCompletion();
 });
 
 app.post('/save', async (req, res) => {
