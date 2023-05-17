@@ -27,24 +27,33 @@
             <input class="form-control me-2" id="search-input" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-primary" type="submit">Search</button>
         </form>
-            <script>
-                // Add an event listener to the form submission
-                document.getElementById('search-bar').addEventListener('submit', function (event) {
-                    event.preventDefault(); // Prevent form submission
 
-                    // Get the value of the search input
-                    var searchQuery = document.getElementById('search-input').value;
+        <script>
+            document.getElementById('search-bar').addEventListener('submit', function (event) {
+                event.preventDefault(); 
 
-                    // Redirect to meal-plans.js with the search query as a URL parameter
-                    console.log(searchQuery);
-                    // window.location.href = '/meal-plans?query=' + encodeURIComponent(searchQuery);
-                });
-            </script>
+                var searchQuery = document.getElementById('search-input').value.toLowerCase();
 
+                var mealCards = document.querySelectorAll('.meal-card');
+
+                for (var i = 0; i < mealCards.length; i++) {
+                    var mealCard = mealCards[i];
+                    var mealName = mealCard.querySelector('.card-title').innerText.toLowerCase();
+                    var mealRestaurant = mealCard.querySelector('.card-text').innerText.toLowerCase();
+
+                    if (mealName.includes(searchQuery) || mealRestaurant.includes(searchQuery)) {
+                        mealCard.style.display = 'block'; 
+                    } else {
+                        mealCard.style.display = 'none'; 
+                    }
+                }
+            });
+        </script>
 
         <!--Meal Cards-->
         <% fastfood.forEach(meal=> {%>
-            <section>
+            <section class="meal-card">
+                <!-- Meal card content -->
                 <div class="container p-3">
                     <div class="card">
                         <div class="card-body">
@@ -129,6 +138,7 @@
                 </div>
             </section>
             <%});%>
+
 
                 <div class="mealCards"></div>
 
