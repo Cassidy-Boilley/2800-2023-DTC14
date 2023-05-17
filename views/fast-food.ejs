@@ -16,14 +16,30 @@
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/82e4826c76.js" crossorigin="anonymous"></script>
+
+
     <%- include ('partials/header.ejs') %>
         <!--Work goes here -->
 
         <!--Search Bar-->
-        <form class="d-flex p-3" role="search" style="max-width: 1320px; margin-right: auto; margin-left: auto;">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <form id="search-bar" class="d-flex p-3" role="search"
+            style="max-width: 1320px; margin-right: auto; margin-left: auto;">
+            <input class="form-control me-2" id="search-input" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-primary" type="submit">Search</button>
         </form>
+            <script>
+                // Add an event listener to the form submission
+                document.getElementById('search-bar').addEventListener('submit', function (event) {
+                    event.preventDefault(); // Prevent form submission
+
+                    // Get the value of the search input
+                    var searchQuery = document.getElementById('search-input').value;
+
+                    // Redirect to meal-plans.js with the search query as a URL parameter
+                    console.log(searchQuery);
+                    // window.location.href = '/meal-plans?query=' + encodeURIComponent(searchQuery);
+                });
+            </script>
 
 
         <!--Meal Cards-->
