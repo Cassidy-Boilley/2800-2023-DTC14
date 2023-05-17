@@ -38,4 +38,11 @@ app.get('/isVegan', async (req, res) => {
     
 });
 
+app.get('/favRestaurant', async (req, res) => {
+    const result = await foodCollection.find({ restaurant: "Arbys" });
+    console.log(result);
+    res.render('recommendations.ejs', { authenticated: true, food: result });
+    
+});
+
 module.exports = app;
