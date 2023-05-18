@@ -9,6 +9,7 @@ var MongoDBStore = require('connect-mongodb-session')(session);
 const dotenv = require('dotenv');
 dotenv.config();
 const foodCollection = require('./models/foodcollection.js');
+const mealplanCollection = require('./models/mealplan.js');
 
 
 app.get('/', (req, res) => {
@@ -31,7 +32,7 @@ app.get('/recommendations', async (req, res) => {
   const averageCalories = averageCaloriesDoc[0].averageCalories;
   console.log(averageCalories);
 
-  const result = await foodCollection.find({ calories: { $lt: averageCalories } });
+  const result = await foodCollection.find({ calories: { $lte: averageCalories + 100 } });
 
   res.render('recommendations.ejs', { authenticated: true, food: result });
 });
@@ -39,7 +40,7 @@ app.get('/recommendations', async (req, res) => {
 //reuse of Josh's code
 app.post('/save', async (req, res) => {
     const mealId = req.body;
-    const result = await fastfoodCollection.findOne({
+    const result = await foodCollection.findOne({
         _id: mealId.mealId
     });
 
@@ -70,8 +71,5 @@ app.post('/save', async (req, res) => {
         console.log(error);
     }
 });
-
-
-
 
 module.exports = app;

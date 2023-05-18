@@ -18,8 +18,8 @@ const databaseSchema = new mongoose.Schema({
     calcium: Number,
     salad: String
 },
-    { collection: 'historyitems' });
+    { collection: 'mealplans' });
 
-const databaseModel = mongoose.model('recommendations', databaseSchema);
+const databaseModel = mongoose.model('mealplans', databaseSchema);
 
 module.exports = databaseModel;

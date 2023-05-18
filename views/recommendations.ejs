@@ -34,8 +34,10 @@
         <hr class="solid">
 
         <!-- insert recommendation by -->
+        <!--Meal Cards-->
         <% food.forEach(meal=> {%>
-            <section>
+            <section class="meal-card">
+                <!-- Meal card content -->
                 <div class="container p-3">
                     <div class="card">
                         <div class="card-body">
@@ -113,15 +115,13 @@
                             </div>
                             <form action="/save" method="post" class="d-inline">
                                 <input type="hidden" name="mealId" value="<%= meal._id %>">
-                                <button class="btn btn-success" value="meal">Save to Meal Plans</button>
+                                <button class="btn btn-danger" value="meal">Save to Meal Plans</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </section>
             <%});%>
-        <br>
-        <br>
-        <br>
         <%- include ('partials/footer.ejs') %>
 </body>
 
