@@ -18,31 +18,32 @@ app.get('/', (req, res) => {
 );
 
 app.get('/recommendations', async (req, res) => {
+    // CHANGE AUTHENTICATED CONDITION WHEN IMPLEMENTATION IS DONE
+    const averageCaloriesCursor = await foodCollection.aggregate([
+  {
+    $group: {
+      _id: null,
+      averageCalories: { $avg: "$calories" }
+    }
+  }
+]);
+
+    const [averageCaloriesDoc] = await averageCaloriesCursor.toArray();
+    const averageCalories = averageCaloriesDoc.averageCalories;
+
+    const result = await foodCollection.find({ calories: { $lt: averageCalories }});
+
+    res.render('recommendation.ejs', { authenticated: true, food: result });
+    }
+);
+
+app.get('/recommendations', async (req, res) => {
     const result = await foodCollection.find();
     console.log(result);
     res.render('recommendations.ejs', { authenticated: true, food: result });
     
 });
 
-app.get('/maxCalo', async (req, res) => {
-    const result = await foodCollection.find({ calories: { $lt: 500 }});
-    console.log(result);
-    res.render('recommendations.ejs', { authenticated: true, food: result });
-    
-});
 
-app.get('/isVegan', async (req, res) => {
-    const result = await foodCollection.find({ vegan: true });
-    console.log(result);
-    res.render('recommendations.ejs', { authenticated: true, food: result });
-    
-});
-
-app.get('/favRestaurant', async (req, res) => {
-    const result = await foodCollection.find({ restaurant: "Arbys" });
-    console.log(result);
-    res.render('recommendations.ejs', { authenticated: true, food: result });
-    
-});
 
 module.exports = app;
