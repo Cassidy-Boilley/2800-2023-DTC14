@@ -20,47 +20,47 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-    // CHANGE AUTHENTICATED CONDITION WHEN IMPLEMENTATION IS DONE
-    res.render('index.ejs', { authenticated: true });
-});
-
 app.get('/fast-food', async (req, res) => {
     const result = await fastfoodCollection.find();
-    res.render('fast-food.ejs', { authenticated: true, fastfood: result });
+    res.render('fast-food.ejs', { fastfood: result });
 });
 
 app.get('/meal-plan', async (req, res) => {
-    const userId = await usersModel.findOne({
-        email: "test@test.ca" //CHANGE THIS WHEN LOGIN IS IMPLEMENTED
-    });
-
-    const result = await mealplanCollection.find({
-        user_id: userId._id
-    });
-
-    const username = "John Doe"
-
-    const startPrompt = `Write a paragraph of less than 120 words which greets a user named ${username}, tells him that" +
-        the following list is his meal plan, and summarizes the list`
-
-    async function runCompletion() {
-        const completion = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: startPrompt + result,
-            max_tokens: 150
+    if (req.session.GLOBAL_AUTHENTICATED) {
+        const userId = await usersModel.findOne({
+            email: req.session.loggedEmail
         });
-        console.log(completion.data.choices[0].text)
-        res.render('meal-plan.ejs', { authenticated: true, mealplan: result, message: completion.data.choices[0].text });
+
+        const result = await mealplanCollection.find({
+            user_id: userId._id
+        });
+
+        // TODO: Update this to use the user's name
+        const username = "John Doe"
+
+        const startPrompt = `Write a paragraph of less than 120 words which greets a user named ${username}, tells him that" +
+            the following list is his saved meals, and summarizes the list`
+
+        async function runCompletion() {
+            const completion = await openai.createCompletion({
+                model: "text-davinci-003",
+                prompt: startPrompt + result,
+                max_tokens: 150
+            });
+            console.log(completion.data.choices[0].text)
+            res.render('meal-plan.ejs', { authenticated: true, mealplan: result, message: completion.data.choices[0].text });
+        }
+        runCompletion();
+    } else {
+        res.redirect('/login');
     }
-    runCompletion();
 });
 
-app.post('/save', async (req, res) => {
+app.post('/saveMeal', async (req, res) => {
     const mealId = req.body;
 
     const userId = await usersModel.findOne({
-        email: "test@test.ca" //CHANGE THIS WHEN LOGIN IS IMPLEMENTED
+        email: req.session.loggedEmail //CHANGE THIS WHEN LOGIN IS IMPLEMENTED
     });
 
     const result = await fastfoodCollection.findOne({
