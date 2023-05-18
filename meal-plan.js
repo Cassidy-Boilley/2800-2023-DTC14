@@ -32,7 +32,7 @@ app.get('/fast-food', async (req, res) => {
 
 app.get('/meal-plan', async (req, res) => {
     const userId = await usersModel.findOne({
-        email: "test@test.ca" //CHANGE THIS WHEN USERS ARE IMPLEMENTED
+        email: "test@test.ca" //CHANGE THIS WHEN LOGIN IS IMPLEMENTED
     });
 
     const result = await mealplanCollection.find({
@@ -60,7 +60,7 @@ app.post('/save', async (req, res) => {
     const mealId = req.body;
 
     const userId = await usersModel.findOne({
-        email: "test@test.ca" //CHANGE THIS WHEN USERS ARE IMPLEMENTED
+        email: "test@test.ca" //CHANGE THIS WHEN LOGIN IS IMPLEMENTED
     });
 
     const result = await fastfoodCollection.findOne({
