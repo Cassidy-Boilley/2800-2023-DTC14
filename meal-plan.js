@@ -80,7 +80,7 @@ app.post('/save', async (req, res) => {
             calcium: result.calcium,
             salad: result.salad,
             vegan: result.vegan,
-            user_id: "645e925b4d6f03a38e544480",
+            user_id: "645e925b4d6f03a38e544480", // CHANGE THIS WHEN USERS ARE IMPLEMENTED
         });
         await addToMealPlan.save();
         res.redirect('/fast-food');
