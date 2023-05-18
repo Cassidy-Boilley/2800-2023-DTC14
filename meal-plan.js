@@ -48,7 +48,7 @@ app.get('/meal-plan', async (req, res) => {
                 max_tokens: 150
             });
             console.log(completion.data.choices[0].text)
-            res.render('meal-plan.ejs', { authenticated: true, mealplan: result, message: completion.data.choices[0].text });
+            res.render('meal-plan.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, mealplan: result, message: completion.data.choices[0].text });
         }
         runCompletion();
     } else {
