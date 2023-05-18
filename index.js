@@ -222,7 +222,9 @@ app.get("/accountsettings", async (req, res) => {
     const user = await usersModel.findOne({
         name: req.session.loggedName
     });
-    res.render('accountsettings.ejs', { user: user });
+
+    const decryptedPassword = bcrypt.compareSync(req.session.loggedPassword, user.password) ? req.session.loggedPassword : "********";
+    res.render('accountsettings.ejs', { user: user, password: decryptedPassword });
 });
 
 /**
