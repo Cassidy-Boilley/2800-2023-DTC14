@@ -29,7 +29,7 @@
         </form>
 
         <script>
-            document.getElementById('search-bar').addEventListener('submit', function (event) {
+            document.getElementById('search-bar').addEventListener('input', function (event) {
                 event.preventDefault(); 
 
                 var searchQuery = document.getElementById('search-input').value.toLowerCase();
