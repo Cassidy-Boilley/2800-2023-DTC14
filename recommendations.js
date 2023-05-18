@@ -19,30 +19,22 @@ app.get('/', (req, res) => {
 
 app.get('/recommendations', async (req, res) => {
     // CHANGE AUTHENTICATED CONDITION WHEN IMPLEMENTATION IS DONE
-    const averageCaloriesCursor = await foodCollection.aggregate([
-  {
+    const averageCaloriesCursor = await foodCollection.aggregate([{
     $group: {
       _id: null,
       averageCalories: { $avg: "$calories" }
-    }
-  }
-]);
-
+      }
+    }]);
+  
     const [averageCaloriesDoc] = await averageCaloriesCursor.toArray();
     const averageCalories = averageCaloriesDoc.averageCalories;
-
+    console.log(averageCalories);
     const result = await foodCollection.find({ calories: { $lt: averageCalories }});
 
     res.render('recommendation.ejs', { authenticated: true, food: result });
     }
 );
 
-app.get('/recommendations', async (req, res) => {
-    const result = await foodCollection.find();
-    console.log(result);
-    res.render('recommendations.ejs', { authenticated: true, food: result });
-    
-});
 
 
 
