@@ -35,11 +35,9 @@ app.get('/meal-plan', async (req, res) => {
         email: "test@test.ca" //CHANGE THIS WHEN USERS ARE IMPLEMENTED
     });
 
-    const result = await mealplanCollection.find(
-        {
-            user_id: userId._id
-        }
-    );
+    const result = await mealplanCollection.find({
+        user_id: userId._id
+    });
 
     const username = "John Doe"
 
