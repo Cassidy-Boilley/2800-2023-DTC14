@@ -58,6 +58,11 @@ app.get('/meal-plan', async (req, res) => {
 
 app.post('/save', async (req, res) => {
     const mealId = req.body;
+
+    const userId = await usersModel.findOne({
+        email: "test@test.ca" //CHANGE THIS WHEN USERS ARE IMPLEMENTED
+    });
+
     const result = await fastfoodCollection.findOne({
         _id: mealId.mealId
     });
@@ -82,7 +87,7 @@ app.post('/save', async (req, res) => {
             calcium: result.calcium,
             salad: result.salad,
             vegan: result.vegan,
-            user_id: "645e925b4d6f03a38e544480", // CHANGE THIS WHEN USERS ARE IMPLEMENTED
+            user_id: userId._id,
         });
         await addToMealPlan.save();
         res.redirect('/fast-food');
