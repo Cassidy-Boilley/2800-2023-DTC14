@@ -85,8 +85,7 @@ app.post('/signup', async (req, res) => {
                 name: req.body.name,
                 email: req.body.email,
                 password: newUserPassword,
-                city: "",
-                mealPlan: []
+                city: ""
             });
             await newUser.save();
             res.redirect('/login');
