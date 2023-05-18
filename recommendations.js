@@ -36,6 +36,41 @@ app.get('/recommendations', async (req, res) => {
   res.render('recommendations.ejs', { authenticated: true, food: result });
 });
 
+//reuse of Josh's code
+app.post('/save', async (req, res) => {
+    const mealId = req.body;
+    const result = await fastfoodCollection.findOne({
+        _id: mealId.mealId
+    });
+
+    try {
+        const addToMealPlan = new mealplanCollection({
+        restaurant: result.restaurant,
+        item: result.item,
+        calories: result.calories,
+        cal_fat: result.cal_fat,
+        total_fat: result.total_fat,
+        sat_fat: result.sat_fat,
+        trans_fat: result.trans_fat,
+        cholesterol: result.cholesterol,
+        sodium: result.sodium,
+        total_carb: result.total_carb,
+        fiber: result.fiber,
+        sugar: result.sugar,
+        protein: result.protein,
+        vit_a: result.vit_a,
+        vit_c:  result.vit_c,
+        calcium: result.calcium,
+        salad: result.salad,
+        vegan: result.vegan,
+    });
+    await addToMealPlan.save();
+    res.redirect('/recommendations');
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 
 
 

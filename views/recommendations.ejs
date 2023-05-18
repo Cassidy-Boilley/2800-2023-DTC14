@@ -111,7 +111,9 @@
                                     </div>
                                 </div>
                             </div>
-                            
+                            <form action="/save" method="post" class="d-inline">
+                                <input type="hidden" name="mealId" value="<%= meal._id %>">
+                                <button class="btn btn-success" value="meal">Save to Meal Plans</button>
                         </div>
                     </div>
                 </div>
