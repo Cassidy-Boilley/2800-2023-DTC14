@@ -39,7 +39,6 @@ app.use(session({
 }));
 
 app.get('/', (req, res) => {
-    // TODO: CHANGE AUTHENTICATED CONDITION WHEN IMPLEMENTATION IS DONE
     res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED });
 }
 );
@@ -87,7 +86,7 @@ app.post('/signup', async (req, res) => {
                 email: req.body.email,
                 password: newUserPassword,
                 city: "",
-                history: []
+                mealPlan: []
             });
             await newUser.save();
             res.redirect('/login');
