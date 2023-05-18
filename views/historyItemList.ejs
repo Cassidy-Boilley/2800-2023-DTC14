@@ -1,0 +1,87 @@
+<h1> History </h1>
+<% historyItemList.forEach(item=> {%>
+    <section>
+        <div class="container p-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%= item.item%>
+                    </h5>
+                    <p class="card-text">
+                        <%= item.restaurant%>
+                    </p>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#<%= item._id %>">
+                        See more
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="<%= item._id %>" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                        <%= item.restaurant%> - <%= item.item%>
+                                    </h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <p>Calories: <%= item.calories%>
+                                            </p>
+                                            <p>Cal Fat: <%= item.cal_fat%>
+                                            </p>
+                                            <p>Total Fat: <%= item.total_fat%>
+                                            </p>
+                                            <p>Saturated Fat: <%= item.sat_fat%>
+                                            </p>
+                                            <p>Trans Fat: <%= item.trans_fat%>
+                                            </p>
+                                            <p>Cholesterol: <%= item.cholesterol%>
+                                            </p>
+                                            <p>Sodium: <%= item.sodium%>
+                                            </p>
+                                            <p>Carbs: <%= item.total_carb%>
+                                            </p>
+                                        </div>
+                                        <div class="col-6">
+                                            <p>Fiber: <%= item.fiber%>
+                                            </p>
+                                            <p>Sugar: <%= item.sugar%>
+                                            </p>
+                                            <p>Protein: <%= item.protein%>
+                                            </p>
+                                            <p>Vitamin A: <%= item.vit_a%>
+                                            </p>
+                                            <p>Vitamin C: <%= item.vit_c%>
+                                            </p>
+                                            <p>Calcium: <%= item.calcium%>
+                                            </p>
+                                            <p>Salad: <%= item.salad%>
+                                            </p>
+                                            <p>Vegan: <%= item.vegan%>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form action="/save" method="post" class="d-inline">
+                        <input type="hidden" name="itemId" value="<%= item._id %>">
+                        <button class="btn btn-danger" value="item">Save to item Plans</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <%});%>
