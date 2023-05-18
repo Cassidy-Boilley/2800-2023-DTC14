@@ -8,7 +8,8 @@ dotenv.config();
 // Other pages
 const history = require('./history');
 app.use('/', history);
-
+const app = require('./meal-plan.js');
+app.use('/', mealPlan);
 main().catch(err => console.log(err));
 
 async function main() {
