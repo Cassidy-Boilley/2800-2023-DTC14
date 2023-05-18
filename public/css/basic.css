@@ -5,3 +5,8 @@
 .center {
     margin: auto;
 }
+
+body {
+    padding-top: 5rem;
+    padding-bottom: 7rem;
+}
