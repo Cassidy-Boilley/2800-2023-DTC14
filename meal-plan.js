@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const fastfoodCollection = require('./models/fastfoodCollection.js');
 const mealplanCollection = require('./models/mealplanCollection.js');
+const usersModel = require('./models/users.js');
 const ejs = require('ejs');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -30,12 +31,15 @@ app.get('/fast-food', async (req, res) => {
 });
 
 app.get('/meal-plan', async (req, res) => {
+    const userId = await usersModel.findOne({
+        email: "test@test.ca" //CHANGE THIS WHEN USERS ARE IMPLEMENTED
+    });
+
     const result = await mealplanCollection.find(
         {
-            user_id: "645e925b4d6f03a38e544480"
+            user_id: userId._id
         }
     );
-    console.log("HERE" + result);
 
     const username = "John Doe"
 
