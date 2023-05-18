@@ -9,7 +9,7 @@ const usersSchema = new mongoose.Schema({
     email: String,
     password: String,
     city: String,
-    history: Array
+    mealPlan: Array
 });
 const usersModel = mongoose.model('users', usersSchema);
 
