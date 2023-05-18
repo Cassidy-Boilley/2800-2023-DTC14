@@ -30,11 +30,15 @@ app.get('/fast-food', async (req, res) => {
 });
 
 app.get('/meal-plan', async (req, res) => {
-    const result = await mealplanCollection.find();
-    console.log(result);
+    const result = await mealplanCollection.find(
+        {
+            user_id: "645e925b4d6f03a38e544480"
+        }
+    );
+    console.log("HERE" + result);
 
-    const username = "Bob"
-    
+    const username = "John Doe"
+
     const startPrompt = `Write a paragraph of less than 120 words which greets a user named ${username}, tells him that" +
         the following list is his meal plan, and summarizes the list`
 
@@ -58,27 +62,28 @@ app.post('/save', async (req, res) => {
 
     try {
         const addToMealPlan = new mealplanCollection({
-        restaurant: result.restaurant,
-        item: result.item,
-        calories: result.calories,
-        cal_fat: result.cal_fat,
-        total_fat: result.total_fat,
-        sat_fat: result.sat_fat,
-        trans_fat: result.trans_fat,
-        cholesterol: result.cholesterol,
-        sodium: result.sodium,
-        total_carb: result.total_carb,
-        fiber: result.fiber,
-        sugar: result.sugar,
-        protein: result.protein,
-        vit_a: result.vit_a,
-        vit_c:  result.vit_c,
-        calcium: result.calcium,
-        salad: result.salad,
-        vegan: result.vegan,
-    });
-    await addToMealPlan.save();
-    res.redirect('/fast-food');
+            restaurant: result.restaurant,
+            item: result.item,
+            calories: result.calories,
+            cal_fat: result.cal_fat,
+            total_fat: result.total_fat,
+            sat_fat: result.sat_fat,
+            trans_fat: result.trans_fat,
+            cholesterol: result.cholesterol,
+            sodium: result.sodium,
+            total_carb: result.total_carb,
+            fiber: result.fiber,
+            sugar: result.sugar,
+            protein: result.protein,
+            vit_a: result.vit_a,
+            vit_c: result.vit_c,
+            calcium: result.calcium,
+            salad: result.salad,
+            vegan: result.vegan,
+            user_id: "645e925b4d6f03a38e544480",
+        });
+        await addToMealPlan.save();
+        res.redirect('/fast-food');
     } catch (error) {
         console.log(error);
     }
