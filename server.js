@@ -1,10 +1,16 @@
 const mongoose = require('mongoose');
-// TODO: Find out how to use multiple .js files for app
-// For now, just update the app constant
-const app = require('./history.js');
+// Main page
+const app = require('./index');
+
+// dotenv setup
 const dotenv = require('dotenv');
 dotenv.config();
 
+// Other pages
+const history = require('./history');
+app.use('/', history);
+const mealPlan = require('./meal-plan');
+app.use('/', mealPlan);
 main().catch(err => console.log(err));
 
 async function main() {
