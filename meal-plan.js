@@ -32,9 +32,11 @@ app.get('/fast-food', async (req, res) => {
 app.get('/meal-plan', async (req, res) => {
     const result = await mealplanCollection.find();
     console.log(result);
+
+    const username = "Bob"
     
-    const startPrompt = "Write a paragraph of less than 120 words which greets a user named Bob, tells him that" +
-        "the following list is his meal plan, and summarizes the list"
+    const startPrompt = `Write a paragraph of less than 120 words which greets a user named ${username}, tells him that" +
+        the following list is his meal plan, and summarizes the list`
 
     async function runCompletion() {
         const completion = await openai.createCompletion({
