@@ -18,6 +18,7 @@
         crossorigin="anonymous"></script>
     <%- include ('partials/header.ejs') %>
         <h1> Homepage </h1>
+        <h2 style="text-align: center !important;"> Welcome to the homepage, <%- name %>!</h2>
         <div id="homepageButtons" class="text-center d-grid gap-0.5">
             <% if (!authenticated) { %>
                 <button type="button" class="btn btn-primary" onclick="window.location.href='/login'"> Login </button>

@@ -33,9 +33,16 @@ app.use(session({
     expires: new Date(Date.now() + 3600000)
 }));
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     // TODO: CHANGE AUTHENTICATED CONDITION WHEN IMPLEMENTATION IS DONE
-    res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED });
+    const result = await usersModel.findOne({
+        email: req.session.loggedEmail
+    })
+    let name = result.name;
+    if (name.toLowerCase() === 'chris') {
+        name = 'PythonLover3000';
+    }
+    res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: name });
 }
 );
 
