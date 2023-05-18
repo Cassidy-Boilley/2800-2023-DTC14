@@ -1,17 +1,20 @@
-const express = require('express');
 const mongoose = require('mongoose');
+// TODO: Find out how to use multiple .js files for app
+// For now, just update the app constant
 const app = require('./meal-plan.js');
 const dotenv = require('dotenv');
-require('dotenv').config();
+dotenv.config();
+
+// Other pages
+const history = require('./history');
+app.use('/', history);
 
 main().catch(err => console.log(err));
 
 async function main() {
-
-  await mongoose.connect(`mongodb+srv://cboilley:${process.env.MDBPASSWORD}@dtc14.e61wbsk.mongodb.net/?retryWrites=true&w=majority`);
-
+  await mongoose.connect(process.env.MDBCONNECTION_STRING);
   console.log("connected to db");
-  app.listen(process.env.PORT || 3040, () => {
-    console.log('server is running on port 3020');
+  app.listen(3040, () => {
+    console.log('server is running on port 3040');
   });
 }
