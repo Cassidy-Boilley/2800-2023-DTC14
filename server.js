@@ -7,8 +7,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Other pages
-const history = require('./history');
-app.use('/', history);
 const mealPlan = require('./meal-plan');
 app.use('/', mealPlan);
 main().catch(err => console.log(err));
