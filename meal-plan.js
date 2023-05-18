@@ -98,8 +98,13 @@ app.post('/saveMeal', async (req, res) => {
 
 app.post('/delete', async (req, res) => {
     const mealId = req.body;
+    const userId = await usersModel.findOne({
+        email: req.session.loggedEmail
+    });
+
     await mealplanCollection.deleteOne({
-        _id: mealId.mealId
+        _id: mealId.mealId,
+        user_id: userId._id,
     });
     res.redirect('/meal-plan');
 });
