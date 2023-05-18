@@ -5,6 +5,10 @@ const app = require('./index.js');
 const dotenv = require('dotenv');
 dotenv.config();
 
+// Other pages
+const history = require('./history');
+app.use('/', history);
+
 main().catch(err => console.log(err));
 
 async function main() {
