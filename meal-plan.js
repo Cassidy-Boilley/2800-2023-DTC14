@@ -43,8 +43,9 @@ app.get('/meal-plan', async (req, res) => {
     const username = "John Doe"
 
     const startPrompt = `Write a paragraph of less than 120 words which greets a user named ${username}, tells him that" +
-        the following list is his meal plan, and summarizes the list`
-
+        the following list is his meal plan, and summarizes the list, while selling each item as though it is beter than` +
+        "it actually is"
+        
     async function runCompletion() {
         const completion = await openai.createCompletion({
             model: "text-davinci-003",
