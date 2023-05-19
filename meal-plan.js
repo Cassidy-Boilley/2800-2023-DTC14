@@ -35,8 +35,7 @@ app.get('/meal-plan', async (req, res) => {
             user_id: userId._id
         });
 
-        // TODO: Update this to use the user's name
-        const username = "John Doe"
+        const username = req.session.loggedName;
 
         const startPrompt = `Write a paragraph of less than 120 words which greets a user named ${username}, tells him that" +
             the following list is his saved meals, and summarizes the list`
@@ -48,7 +47,7 @@ app.get('/meal-plan', async (req, res) => {
                 max_tokens: 150
             });
             console.log(completion.data.choices[0].text)
-            res.render('meal-plan.ejs', { authenticated: true, mealplan: result, message: completion.data.choices[0].text });
+            res.render('meal-plan.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, mealplan: result, message: completion.data.choices[0].text });
         }
         runCompletion();
     } else {
