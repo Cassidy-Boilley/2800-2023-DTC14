@@ -1,7 +1,12 @@
-header>h1 {
-    text-align: center !important;
+#logo {
+    border-radius: 30%;
 }
 
-footer>h1 {
-    text-align: center !important;
+.center {
+    margin: auto;
+}
+
+body {
+    padding-top: 5rem;
+    padding-bottom: 7rem;
 }
