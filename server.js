@@ -12,6 +12,7 @@ dotenv.config();
 const mealPlan = require('./meal-plan.js');
 const recommendations = require('./recommendations.js');
 app.use('/', mealPlan);
+app.use('/', recommendations);
 main().catch(err => console.log(err));
 
 async function main() {
