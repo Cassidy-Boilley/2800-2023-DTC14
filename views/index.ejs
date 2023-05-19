@@ -20,7 +20,6 @@
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/82e4826c76.js" crossorigin="anonymous"></script>
     <%- include ('partials/header.ejs') %>
-
         <h1> Homepage </h1>
         <div id="homepageButtons" class="text-center d-grid gap-0.5">
             <% if (!authenticated) { %>
@@ -34,8 +33,6 @@
                         <button type="button" class="btn btn-primary" onclick="window.location.href='/history'"> History
                         </button>
                         <br>
-                        <button type="button" class="btn btn-primary" onclick="window.location.href='/recommendations'"> Recommendations </button>
-                        <br>
                         <form action="/logout" method="post" class="d-inline">
                             <button type="button" class="btn btn-primary" onclick="submit()"> Logout </button>
                         </form>
@@ -43,7 +40,6 @@
                         <% } %>
         </div>
         <%- include ('partials/footer.ejs') %>
-
 </body>
 
 
