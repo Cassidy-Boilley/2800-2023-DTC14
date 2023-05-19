@@ -10,6 +10,30 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link href="/css/basic.css" rel="stylesheet">
     <link href="/css/index.css" rel="stylesheet">
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var user = "<%= name %>";
+
+            if (user === 'PythonLover3000') {
+                var darkCSS = document.createElement('link');
+                darkCSS.rel = 'stylesheet';
+                darkCSS.href = '/css/dark.css';  // Replace with the correct path to your 'dark.css' file
+                document.head.appendChild(darkCSS);
+            }
+        });
+    </script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var user = "<%= name %>";
+
+            if (user === 'PythonLover3000') {
+                var darkCSS = document.createElement('link');
+                darkCSS.rel = 'stylesheet';
+                darkCSS.href = '/css/dark.css';  // Replace with the correct path to your 'dark.css' file
+                document.head.appendChild(darkCSS);
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -17,27 +41,42 @@
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/82e4826c76.js" crossorigin="anonymous"></script>
-    <%- include ('partials/header.ejs') %>
-        <h1> Homepage </h1>
-        <div id="homepageButtons" class="text-center d-grid gap-0.5">
-            <% if (!authenticated) { %>
-                <button type="button" class="btn btn-primary" onclick="window.location.href='/login'"> Login </button>
-                <br>
-                <button type="button" class="btn btn-primary" onclick="window.location.href='/signup'"> Sign up
-                </button>
-                <br>
-                <% } %>
-                    <% if (authenticated) { %>
-                        <button type="button" class="btn btn-primary" onclick="window.location.href='/history'"> History
-                        </button>
-                        <br>
-                        <form action="/logout" method="post" class="d-inline">
-                            <button type="button" class="btn btn-primary" onclick="submit()"> Logout </button>
-                        </form>
+    <% if (name==='PythonLover3000' ) { %>
+        <%- include ('partials/dark-header.ejs') %>
+            <% } else { %>
+                <%- include ('partials/header.ejs') %>
+                    <% } %>
+                        <h1> Homepage </h1>
+                        <h2> Welcome, <%= name %>!</h2>
+                        <div id="homepageButtons" class="text-center d-grid gap-0.5">
+                            <% if (!authenticated) { %>
+                                <button type="button" class="btn btn-primary" onclick="window.location.href='/login'">
+                                    Login
+                                </button>
+                                <br>
+                                <button type="button" class="btn btn-primary" onclick="window.location.href='/signup'">
+                                    Sign up
+                                </button>
+                                <br>
+                                <% } %>
+                                    <% if (authenticated) { %>
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="window.location.href='/history'">
+                                            History
+                                        </button>
+                                        <br>
+                                        <form action="/logout" method="post" class="d-inline">
+                                            <button type="button" class="btn btn-primary" onclick="submit()"> Logout
+                                            </button>
+                                        </form>
 
-                        <% } %>
-        </div>
-        <%- include ('partials/footer.ejs') %>
+                                        <% } %>
+                        </div>
+                        <% if (name==='PythonLover3000' ) { %>
+                            <%- include ('partials/dark-footer.ejs') %>
+                                <% } else { %>
+                                    <%- include ('partials/footer.ejs') %>
+                                        <% } %>
 </body>
 
 </html>

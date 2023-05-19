@@ -20,14 +20,27 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-    // CHANGE AUTHENTICATED CONDITION WHEN IMPLEMENTATION IS DONE
-    res.render('index.ejs', { authenticated: true });
-});
+app.get('/', async (req, res) => {
+    // TODO: CHANGE AUTHENTICATED CONDITION WHEN IMPLEMENTATION IS DONE
+    const result = await usersModel.findOne({
+        // email: req.session.loggedEmail
+        email: "test@test.ca"
+    })
+    let name = result.name;
+    if (name.toLowerCase() === 'chris') {
+        name = 'PythonLover3000';
+    }
+    res.render('index.ejs', { authenticated: true, name: name });
+}
+);
 
 app.get('/fast-food', async (req, res) => {
+    const userId = await usersModel.findOne({
+        email: "test@test.ca" //CHANGE THIS WHEN LOGIN IS IMPLEMENTED
+    });
+
     const result = await fastfoodCollection.find();
-    res.render('fast-food.ejs', { authenticated: true, fastfood: result });
+    res.render('fast-food.ejs', { authenticated: true, fastfood: result, name: userId.name });
 });
 
 app.get('/meal-plan', async (req, res) => {
@@ -44,7 +57,7 @@ app.get('/meal-plan', async (req, res) => {
     const startPrompt = `Write a paragraph of less than 120 words which greets a user named ${username}, tells him that" +
         the following list is his meal plan, and summarizes the list, while selling each item as though it is beter than` +
         "it actually is"
-        
+
     async function runCompletion() {
         const completion = await openai.createCompletion({
             model: "text-davinci-003",
@@ -52,7 +65,7 @@ app.get('/meal-plan', async (req, res) => {
             max_tokens: 150
         });
         console.log(completion.data.choices[0].text)
-        res.render('meal-plan.ejs', { authenticated: true, mealplan: result, message: completion.data.choices[0].text });
+        res.render('meal-plan.ejs', { authenticated: true, mealplan: result, message: completion.data.choices[0].text, name: userId.name });
     }
     runCompletion();
 });
@@ -91,7 +104,7 @@ app.post('/save', async (req, res) => {
             user_id: userId._id,
         });
         await addToMealPlan.save();
-        res.redirect('/meal-plan');
+        res.redirect('/fast-food');
     } catch (error) {
         console.log(error);
     }
