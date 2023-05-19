@@ -35,15 +35,16 @@ app.get('/', async (req, res) => {
         email: req.session.loggedEmail
     })
 
-    if (result === null) {
-        res.redirect('/login')
+    if (result !== null) {
+        let name = result.name;
+        if (name.toLowerCase() === 'chris') {
+            name = 'PythonLover3000';
+        }
+        res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: name });
+    } else {
+        res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: "" });
     }
-
-    let name = result.name;
-    if (name.toLowerCase() === 'chris') {
-        name = 'PythonLover3000';
-    }
-    res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: name });
+    
 }
 );
 
