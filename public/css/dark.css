@@ -1,0 +1,69 @@
+body {
+    background-color: #2e3136
+}
+
+h1 {
+    color: white;
+}
+
+h2 {
+    color: white
+}
+
+.navbar {
+    background-color: #1e2124
+}
+
+p {
+    color: white
+}
+
+.meal-cards {
+    background-color: #1e2124
+}
+
+.card-title {
+    color: white
+}
+
+#search-input {
+    background-color: #1e2124;
+    border-color: black;
+}
+
+.btn-outline-primary {
+    color: white;
+    border-color: black
+}
+
+.btn-outline-primary:hover {
+    color: white;
+    border-color: black
+}
+
+.form-control::placeholder {
+    color: white;
+}
+
+.form-control {
+    background-color: #1e2124;
+    color: white !important;
+}
+
+label {
+    color: white;
+}
+
+.btn-primary {
+    background-color: #36393e;
+    border-color: black;
+}
+
+.btn-danger {
+    background-color: #36393e;
+    border-color: black;
+}
+
+.meal-message {
+    color: white;
+}

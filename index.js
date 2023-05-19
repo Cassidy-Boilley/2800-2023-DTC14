@@ -30,8 +30,20 @@ app.use(session({
     expires: new Date(Date.now() + 3600000)
 }));
 
-app.get('/', (req, res) => {
-    res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED });
+app.get('/', async (req, res) => {
+    const result = await usersModel.findOne({
+        email: req.session.loggedEmail
+    })
+
+    if (result === null) {
+        res.redirect('/login')
+    }
+
+    let name = result.name;
+    if (name.toLowerCase() === 'chris') {
+        name = 'PythonLover3000';
+    }
+    res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: name });
 }
 );
 
@@ -207,16 +219,20 @@ app.get("/accountsettings", async (req, res) => {
     const user = await usersModel.findOne({
         name: req.session.loggedName
     });
-    res.render('accountsettings.ejs', { user: user });
+    res.render('accountsettings.ejs', { user: user, name: user.name });
 });
 
 app.get("/chat", async (req, res) => {
+    const user = await usersModel.findOne({
+        name: req.session.loggedName
+    });
+    
     async function runCompletion() {
         const completion = await openai.createCompletion({
             model: "text-davinci-003",
             prompt: "How are you today?",
         });
-        res.render('chat.ejs', { message : completion.data.choices[0].text });
+        res.render('chat.ejs', { message: completion.data.choices[0].text, user: user.name, name: user.name });
     }
     runCompletion();
 });
@@ -228,10 +244,13 @@ app.post("/update-profile", async (req, res) => {
     try {
         const result = await usersModel.updateOne(
             { name: req.session.loggedName },
-            { $set: { 
-                city: profileInfo.city, 
-                email: profileInfo.email, 
-                name: profileInfo.name } }
+            {
+                $set: {
+                    city: profileInfo.city,
+                    email: profileInfo.email,
+                    name: profileInfo.name
+                }
+            }
         );
         res.redirect("/accountsettings");
     } catch (error) {

@@ -55,8 +55,12 @@ app.get('/one-time', async (req, res) => {
 
 
 app.get('/fast-food', async (req, res) => {
+    const userId = await usersModel.findOne({
+        email: req.session.loggedEmail
+    });
+
     const result = await fastfoodCollection.find();
-    res.render('fast-food.ejs', { fastfood: result });
+    res.render('fast-food.ejs', { fastfood: result, name: userId.name });
 });
 
 app.get('/meal-plan', async (req, res) => {
@@ -81,7 +85,7 @@ app.get('/meal-plan', async (req, res) => {
                 max_tokens: 150
             });
             console.log(completion.data.choices[0].text)
-            res.render('meal-plan.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, mealplan: result, message: completion.data.choices[0].text });
+            res.render('meal-plan.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, mealplan: result, message: completion.data.choices[0].text, name: userId.name });
         }
         runCompletion();
     } else {
