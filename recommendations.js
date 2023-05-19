@@ -8,6 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 var MongoDBStore = require('connect-mongodb-session')(session);
 const dotenv = require('dotenv');
 dotenv.config();
+const usersModel = require('./models/users');
 const foodCollection = require('./models/foodcollection.js');
 const mealplanCollection = require('./models/mealplanCollection.js');
 
@@ -19,12 +20,16 @@ const openai = new OpenAIApi(configuration);
 
 
 app.get('/', (req, res) => {
-    // CHANGE AUTHENTICATED CONDITION WHEN IMPLEMENTATION IS DONE
-    res.render('index.ejs', { authenticated: true });
-    }
+  // CHANGE AUTHENTICATED CONDITION WHEN IMPLEMENTATION IS DONE
+  res.render('index.ejs', { authenticated: true });
+}
 );
 
 app.get('/recommendations', async (req, res) => {
+  const user = await usersModel.findOne({
+    email: req.session.loggedEmail
+  })
+
   const averageCaloriesCursor = mealplanCollection.aggregate([
     {
       $group: {
@@ -38,7 +43,7 @@ app.get('/recommendations', async (req, res) => {
   const averageCalories = averageCaloriesDoc[0].averageCalories;
   console.log(averageCalories);
 
-  const result = await mealplanCollection.find({ calories: { $lt: averageCalories } }).sort({restaurant: 1, calories: 1});
+  const result = await mealplanCollection.find({ calories: { $lt: averageCalories } }).sort({ restaurant: 1, calories: 1 });
 
   const startPrompt = "Write a paragraph of less than 120 words which greets a user named Bob, tells him that" +
     "the following list is his recommendations, and summarizes the list"
@@ -50,7 +55,7 @@ app.get('/recommendations', async (req, res) => {
       max_tokens: 150
     });
     console.log(completion.data.choices[0].text)
-    res.render('recommendations.ejs', { authenticated: true, food: result, message: completion.data.choices[0].text });
+    res.render('recommendations.ejs', { authenticated: true, food: result, message: completion.data.choices[0].text, name: user.name });
   }
   runCompletion();
 
@@ -59,37 +64,37 @@ app.get('/recommendations', async (req, res) => {
 
 //reuse of Josh's code
 app.post('/save', async (req, res) => {
-    const mealId = req.body;
-    const result = await foodCollection.findOne({
-        _id: mealId.mealId
-    });
+  const mealId = req.body;
+  const result = await foodCollection.findOne({
+    _id: mealId.mealId
+  });
 
-    try {
-        const addToMealPlan = new mealplanCollection({
-        restaurant: result.restaurant,
-        item: result.item,
-        calories: result.calories,
-        cal_fat: result.cal_fat,
-        total_fat: result.total_fat,
-        sat_fat: result.sat_fat,
-        trans_fat: result.trans_fat,
-        cholesterol: result.cholesterol,
-        sodium: result.sodium,
-        total_carb: result.total_carb,
-        fiber: result.fiber,
-        sugar: result.sugar,
-        protein: result.protein,
-        vit_a: result.vit_a,
-        vit_c:  result.vit_c,
-        calcium: result.calcium,
-        salad: result.salad,
-        vegan: result.vegan,
+  try {
+    const addToMealPlan = new mealplanCollection({
+      restaurant: result.restaurant,
+      item: result.item,
+      calories: result.calories,
+      cal_fat: result.cal_fat,
+      total_fat: result.total_fat,
+      sat_fat: result.sat_fat,
+      trans_fat: result.trans_fat,
+      cholesterol: result.cholesterol,
+      sodium: result.sodium,
+      total_carb: result.total_carb,
+      fiber: result.fiber,
+      sugar: result.sugar,
+      protein: result.protein,
+      vit_a: result.vit_a,
+      vit_c: result.vit_c,
+      calcium: result.calcium,
+      salad: result.salad,
+      vegan: result.vegan,
     });
     await addToMealPlan.save();
     res.redirect('/recommendations');
-    } catch (error) {
-        console.log(error);
-    }
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = app;
