@@ -1,3 +1,4 @@
+</html>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -129,14 +130,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <form action="/save?route=fast-food" method="post" class="d-inline">
+                            <form action="/save?route=favorite" method="post" class="d-inline">
                                 <input type="hidden" name="mealId" value="<%= meal._id %>">
-                                <input type="hidden" name="route" value="fast-food">
+                                <input type="hidden" name="route" value="favorite">
                                 <button class="btn btn-danger" value="meal">Save to Meal Plans</button>
                             </form>
-                            <form action="/favorite" method="post" class="d-inline">
+                            <form action="/unfavorite" method="post" class="d-inline">
                                 <input type="hidden" name="mealId" value="<%= meal._id %>">
-                                <button class="btn btn-danger" value="meal">Favorite</button>
+                                <button class="btn btn-danger" value="meal">Unfavorite</button>
                             </form>
                         </div>
                     </div>
