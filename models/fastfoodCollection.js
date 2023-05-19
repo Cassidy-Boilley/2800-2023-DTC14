@@ -18,6 +18,7 @@ const databaseSchema = new mongoose.Schema({
     calcium: Number,
     salad: String,
     vegan: String,
+    description: String
 },
     { collection: 'fastfood' });
 
