@@ -30,7 +30,7 @@
 
         <script>
             document.getElementById('search-bar').addEventListener('input', function (event) {
-                event.preventDefault(); 
+                event.preventDefault();
 
                 var searchQuery = document.getElementById('search-input').value.toLowerCase();
 
@@ -42,9 +42,9 @@
                     var mealRestaurant = mealCard.querySelector('.card-text').innerText.toLowerCase();
 
                     if (mealName.includes(searchQuery) || mealRestaurant.includes(searchQuery)) {
-                        mealCard.style.display = 'block'; 
+                        mealCard.style.display = 'block';
                     } else {
-                        mealCard.style.display = 'none'; 
+                        mealCard.style.display = 'none';
                     }
                 }
             });
@@ -133,6 +133,33 @@
                                 <input type="hidden" name="mealId" value="<%= meal._id %>">
                                 <button class="btn btn-danger" value="meal">Save to Meal Plans</button>
                             </form>
+                            <div class="dropdown d-inline">
+                                <button class="btn btn-danger dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Select Meal Type
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <form action="/assign" method="post" class="d-inline">
+                                            <input type="hidden" name="mealId" value="<%= meal._id %>">
+                                            <button class="dropdown-item" value="meal">Breakfast</button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form action="/assign" method="post" class="d-inline">
+                                            <input type="hidden" name="mealId" value="<%= meal._id %>">
+                                            <button class="dropdown-item" value="meal">Lunch</button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form action="/assign" method="post" class="d-inline">
+                                            <input type="hidden" name="mealId" value="<%= meal._id %>">
+                                            <input type="hidden" name="mealId" value="Dinner">
+                                            <button class="dropdown-item" value="meal">Dinner</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>

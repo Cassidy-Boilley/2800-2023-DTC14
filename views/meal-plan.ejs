@@ -107,33 +107,6 @@
                                 <input type="hidden" name="mealId" value="<%= meal._id %>">
                                 <button class="btn btn-danger" value="meal">Remove from Meal Plans</button>
                             </form>
-                            <div class="dropdown d-inline">
-                                <button class="btn btn-danger dropdown-toggle" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    Select Meal Type
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <form action="/assign" method="post" class="d-inline">
-                                            <input type="hidden" name="mealId" value="<%= meal._id %>">
-                                            <button class="dropdown-item" value="meal">Breakfast</button>
-                                        </form>
-                                    </li>
-                                    <li>
-                                        <form action="/assign" method="post" class="d-inline">
-                                            <input type="hidden" name="mealId" value="<%= meal._id %>">
-                                            <button class="dropdown-item" value="meal">Lunch</button>
-                                        </form>
-                                    </li>
-                                    <li>
-                                        <form action="/assign" method="post" class="d-inline">
-                                            <input type="hidden" name="mealId" value="<%= meal._id %>">
-                                            <!-- <input type="hidden" name="mealId" value="Dinner">  <- This might work?-->
-                                            <button class="dropdown-item" value="meal">Dinner</button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                 </div>

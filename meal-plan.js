@@ -109,4 +109,8 @@ app.post('/delete', async (req, res) => {
     res.redirect('/meal-plan');
 });
 
+app.post('/assign', async (req, res) => {
+    const result = req.body.mealId;
+})
+
 module.exports = app;
