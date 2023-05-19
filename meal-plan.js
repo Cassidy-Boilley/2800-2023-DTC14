@@ -110,8 +110,32 @@ app.post('/delete', async (req, res) => {
 });
 
 app.post('/assign', async (req, res) => {
-    const result = req.body.mealType;
-    console.log(result);
+    const result = req.body;
+    console.log(result.mealId + " "  + result.mealType);
+
+    try {
+        await mealplanCollection.updateOne(
+            { _id: result.mealId },
+            { $set: { type: result.mealType } },
+            );
+            res.redirect('/meal-plan');
+    } catch (error) {
+        console.log(error);
+    }
 })
+
+app.post('/unassign', async (req, res) => {
+    const result = req.body;
+
+    try {
+        await mealplanCollection.updateOne(
+            { _id: result.mealId },
+            { $set: { type: "" } },
+        )
+        res.redirect('/meal-plan');
+    } catch (error) {
+        console.log(error);
+    }
+});
 
 module.exports = app;

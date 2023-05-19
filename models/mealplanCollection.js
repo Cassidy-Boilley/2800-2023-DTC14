@@ -19,6 +19,7 @@ const databaseSchema = new mongoose.Schema({
     salad: String,
     vegan: String,
     user_id: String,
+    type: String,
 },
     { collection: 'mealplans' });
 
