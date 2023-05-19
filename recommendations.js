@@ -9,7 +9,7 @@ var MongoDBStore = require('connect-mongodb-session')(session);
 const dotenv = require('dotenv');
 dotenv.config();
 const foodCollection = require('./models/foodcollection.js');
-const mealplanCollection = require('./models/mealplan.js');
+const mealplanCollection = require('./models/mealplanCollection.js');
 
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
