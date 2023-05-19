@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const app = express();
 const fastfoodCollection = require('./models/fastfoodCollection.js');
 const mealplanCollection = require('./models/mealplanCollection.js');
-const favoriteCollection = require('./models/favoriteCollection.js');
 const usersModel = require('./models/users.js');
 const ejs = require('ejs');
 const dotenv = require('dotenv');
@@ -60,22 +59,14 @@ app.get('/meal-plan', async (req, res) => {
 
 app.post('/save', async (req, res) => {
     const mealId = req.body;
-    const route = req.query.route;
-    let result;
 
     const userId = await usersModel.findOne({
         email: "test@test.ca" //CHANGE THIS WHEN LOGIN IS IMPLEMENTED
     });
 
-    if (route === 'fast-food') {
-        result = await fastfoodCollection.findOne({
-            _id: mealId.mealId
-        });
-    } else if (route === 'favorite') {
-        result = await favoriteCollection.findOne({
-            _id: mealId.mealId
-        });
-    }
+    const result = await fastfoodCollection.findOne({
+        _id: mealId.mealId
+    })
 
     try {
         const addToMealPlan = new mealplanCollection({
@@ -100,11 +91,7 @@ app.post('/save', async (req, res) => {
             user_id: userId._id,
         });
         await addToMealPlan.save();
-        if (route === 'fast-food') {
-            res.redirect('/fast-food');
-        } else if (route === 'favorite') {
-            res.redirect('/favorite');
-        }
+        res.redirect('/meal-plan');
     } catch (error) {
         console.log(error);
     }
@@ -151,64 +138,5 @@ app.post('/unassign', async (req, res) => {
         console.log(error);
     }
 });
-
-app.get('/favorite', async (req, res) => {
-    const result = await favoriteCollection.find();
-    res.render('favorite.ejs', { authenticated: true, fastfood: result });
-});
-
-app.post('/favorite', async (req, res) => {
-    const mealId = req.body;
-
-    const userId = await usersModel.findOne({
-        email: "test@test.ca" //CHANGE THIS WHEN LOGIN IS IMPLEMENTED
-    });
-
-    const result = await fastfoodCollection.findOne({
-        _id: mealId.mealId
-    });
-
-    try {
-        const addToFavorites = new favoriteCollection({
-            restaurant: result.restaurant,
-            item: result.item,
-            calories: result.calories,
-            cal_fat: result.cal_fat,
-            total_fat: result.total_fat,
-            sat_fat: result.sat_fat,
-            trans_fat: result.trans_fat,
-            cholesterol: result.cholesterol,
-            sodium: result.sodium,
-            total_carb: result.total_carb,
-            fiber: result.fiber,
-            sugar: result.sugar,
-            protein: result.protein,
-            vit_a: result.vit_a,
-            vit_c: result.vit_c,
-            calcium: result.calcium,
-            salad: result.salad,
-            vegan: result.vegan,
-            user_id: userId._id,
-        });
-        await addToFavorites.save();
-        res.redirect('/fast-food');
-    } catch (error) {
-        console.log(error);
-    }
-});
-
-app.post('/unfavorite', async (req, res) => {
-    const mealId = req.body;
-    const userId = await usersModel.findOne({
-        email: "test@test.ca" //CHANGE THIS WHEN LOGIN IS IMPLEMENTED
-    });
-
-    await favoriteCollection.deleteOne({
-        _id: mealId.mealId,
-        user_id: userId._id,
-    });
-    res.redirect('/favorite');
-});
-
 
 module.exports = app;
