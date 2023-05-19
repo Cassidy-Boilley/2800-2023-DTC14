@@ -110,7 +110,8 @@ app.post('/delete', async (req, res) => {
 });
 
 app.post('/assign', async (req, res) => {
-    const result = req.body.mealId;
+    const result = req.body.mealType;
+    console.log(result);
 })
 
 module.exports = app;

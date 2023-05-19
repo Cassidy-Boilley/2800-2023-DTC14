@@ -142,19 +142,21 @@
                                     <li>
                                         <form action="/assign" method="post" class="d-inline">
                                             <input type="hidden" name="mealId" value="<%= meal._id %>">
+                                            <input type="hidden" name="mealType" value="Breakfast">
                                             <button class="dropdown-item" value="meal">Breakfast</button>
                                         </form>
                                     </li>
                                     <li>
                                         <form action="/assign" method="post" class="d-inline">
                                             <input type="hidden" name="mealId" value="<%= meal._id %>">
+                                            <input type="hidden" name="mealType" value="Lunch">
                                             <button class="dropdown-item" value="meal">Lunch</button>
                                         </form>
                                     </li>
                                     <li>
                                         <form action="/assign" method="post" class="d-inline">
                                             <input type="hidden" name="mealId" value="<%= meal._id %>">
-                                            <input type="hidden" name="mealId" value="Dinner">
+                                            <input type="hidden" name="mealType" value="Dinner">
                                             <button class="dropdown-item" value="meal">Dinner</button>
                                         </form>
                                     </li>
