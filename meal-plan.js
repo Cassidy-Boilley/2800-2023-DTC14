@@ -35,7 +35,6 @@ app.get('/meal-plan', async (req, res) => {
             user_id: userId._id
         });
 
-        // TODO: Update this to use the user's name
         const username = req.session.loggedName;
 
         const startPrompt = `Write a paragraph of less than 120 words which greets a user named ${username}, tells him that" +
