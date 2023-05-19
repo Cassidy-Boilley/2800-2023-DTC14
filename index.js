@@ -3,6 +3,7 @@ const session = require('express-session');
 const bcrypt = require('bcrypt');
 const usersModel = require('./models/users');
 const app = express();
+
 const Joi = require('joi');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -29,6 +30,7 @@ app.use(session({
     saveUninitialized: false,
     expires: new Date(Date.now() + 3600000)
 }));
+
 
 app.get('/', (req, res) => {
     res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED });
@@ -238,5 +240,6 @@ app.post("/update-profile", async (req, res) => {
         res.send("An error happened, please try again");
     }
 });
+
 
 module.exports = app;
