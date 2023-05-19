@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 );
 
 app.get('/recommendations', async (req, res) => {
-  const averageCaloriesCursor = foodCollection.aggregate([
+  const averageCaloriesCursor = mealplanCollection.aggregate([
     {
       $group: {
         _id: null,
@@ -38,7 +38,7 @@ app.get('/recommendations', async (req, res) => {
   const averageCalories = averageCaloriesDoc[0].averageCalories;
   console.log(averageCalories);
 
-  const result = await foodCollection.find({ calories: { $lte: averageCalories + 100 } });
+  const result = await mealplanCollection.find({ calories: { $lt: averageCalories } }).sort({restaurant: 1, calories: 1});
 
   const startPrompt = "Write a paragraph of less than 120 words which greets a user named Bob, tells him that" +
     "the following list is his recommendations, and summarizes the list"

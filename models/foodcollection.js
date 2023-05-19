@@ -18,7 +18,7 @@ const databaseSchema = new mongoose.Schema({
     calcium: Number,
     salad: String
 },
-    { collection: 'historyitems' });
+    { collection: 'fastfood' });
 
 const databaseModel = mongoose.model('recommendations', databaseSchema);
 

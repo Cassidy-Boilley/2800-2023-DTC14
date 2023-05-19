@@ -21,16 +21,7 @@
     <%- include ('partials/header.ejs') %>
         <h1> Recommendations </h1>
         <%= message %>
-        <div class="dropdown" style="margin-left: 30px;">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Filter By
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/maxCalo"> Maximum calorie count </a></li>
-                <li><a class="dropdown-item" href="/isVegan">Vegan Meal</a></li>
-                <li><a class="dropdown-item" href="/favRestaurant">Favorite Restaurant</a></li>
-                
-            </ul>
+        
         <hr class="solid">
 
         <!-- insert recommendation by -->
@@ -122,6 +113,9 @@
                 </div>
             </section>
             <%});%>
+            <br>
+            <br>
+            <br>
         <%- include ('partials/footer.ejs') %>
 </body>
 
