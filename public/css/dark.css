@@ -67,3 +67,18 @@ label {
 .meal-message {
     color: white;
 }
+
+.modal-body {
+    background-color: #2e3136;
+    color: white;
+}
+
+.modal-header {
+    background-color: #1e2124;
+    color: black;
+}
+
+.modal-footer {
+    background-color: #1e2124;
+    color: black;
+}
