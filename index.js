@@ -34,17 +34,20 @@ app.get('/', async (req, res) => {
     const result = await usersModel.findOne({
         email: req.session.loggedEmail
     })
+    
+    let name = ""
 
     if (result !== null) {
-        let name = result.name;
+        name = result.name;
         if (name.toLowerCase() === 'chris') {
             name = 'PythonLover3000';
         }
-        res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: name });
-    } else {
-        res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: "" });
+        // res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: name });
+    // } else {
+        // res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: "" });
     }
     
+    res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: name })
 }
 );
 
