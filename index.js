@@ -36,18 +36,30 @@ app.get('/', async (req, res) => {
     })
     
     let name = ""
-
+    let welcomeMessage = ""
     if (result !== null) {
         name = result.name;
         if (name.toLowerCase() === 'chris') {
             name = 'PythonLover3000';
         }
+        const welcome = await openai.createCompletion({
+            model: "text-davinci-003",
+            prompt: "Reword the following paragraph:\n" + "we are so glad to see you again," + name + "!",
+            max_tokens: 150
+        });
+        welcomeMessage = welcome.data.choices[0].text
         // res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: name });
     // } else {
         // res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: "" });
     }
-    
-    res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: name })
+
+    const introduction = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: "Reword the following paragraph:\n" + "Welcome to the app that remembers your fast food history and gives you new meals to try!",
+        max_tokens: 150    
+    });
+
+    res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: name, intro: introduction.data.choices[0].text, welcomeMessage: welcomeMessage })
 }
 );
 
