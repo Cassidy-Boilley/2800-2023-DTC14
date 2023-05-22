@@ -44,7 +44,7 @@ app.get('/', async (req, res) => {
         }
         const welcome = await openai.createCompletion({
             model: "text-davinci-003",
-            prompt: "Reword the following paragraph:\n" + "we are so glad to see you again," + name + "!",
+            prompt: "Reword the following paragraph in 10 words:\n" + "we are so glad to see you again," + name + "!",
             max_tokens: 150
         });
         welcomeMessage = welcome.data.choices[0].text
