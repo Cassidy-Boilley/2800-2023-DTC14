@@ -45,21 +45,27 @@ app.get('/recommendations', async (req, res) => {
 
   const result = await mealplanCollection.find({ calories: { $lt: averageCalories } }).sort({ restaurant: 1, calories: 1 });
 
-  const startPrompt = "Write a paragraph of less than 120 words which greets a user named Bob, tells him that" +
+  const startPrompt = "Write a paragraph of less than 100 words which greets a user named" + req.session.name + "and tells him that" +
     "the following list is his recommendations, and summarizes the list"
 
-  async function runCompletion() {
-    const completion = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: startPrompt + result,
-      max_tokens: 150
-    });
-    console.log(completion.data.choices[0].text)
-    res.render('recommendations.ejs', { authenticated: true, food: result, message: completion.data.choices[0].text, name: user.name });
-  }
-  runCompletion();
+  const completion = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: startPrompt + result,
+    max_tokens: 150
+  });  
 
-  // res.render('recommendations.ejs', { authenticated: true, food: result });
+  // async function runCompletion() {
+  //   const completion = await openai.createCompletion({
+  //     model: "text-davinci-003",
+  //     prompt: startPrompt + result,
+  //     max_tokens: 150
+  //   });
+  //   console.log(completion.data.choices[0].text)
+  //   res.render('recommendations.ejs', { authenticated: true, food: result, message: completion.data.choices[0].text, name: user.name });
+  // }
+  // runCompletion();
+
+  res.render('recommendations.ejs', { authenticated: true, food: result, message: completion.data.choices[0].text, name: user.name });
 });
 
 //reuse of Josh's code
