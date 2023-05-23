@@ -36,11 +36,9 @@
     <% } else { %>
         <%- include ('partials/header.ejs') %>
     <% } %>
-        <div class="text-center py-5 my-5 px-4">
-            <h1> Recommendations </h1>
-            <p> 
-                <%= message %>
-            </p>
+        <div class="my-5 px-4">
+            <h1 class="display-4 fw-bold"> Recommendations </h1>
+            <p class="lead text-center"><%= message %></p>
         <!-- insert recommendation by -->
         <!--Meal Cards-->
         <% food.forEach(meal=> {%>

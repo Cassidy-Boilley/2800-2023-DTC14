@@ -37,11 +37,11 @@
                 <%- include ('partials/header.ejs') %>
                     <% } %>
                     <div class="text-center py-5 my-5 px-4">
-                        <h1> ChatBLT </h1>
+                        <h1 class="display-1"> ChatBLT </h1>
                         <br>
                         <h2 class="lead"> <%= intro%> </h2>
                         <br>
-                        <h2 class="lead"> <%= welcomeMessage%> </h2>
+                        <p class="lead"><strong><em><%= welcomeMessage%></em></strong></p>
                         <br>
                         <div id="homepageButtons" class="text-center d-grid gap-0.5">
                             <% if (!authenticated) { %>
