@@ -45,7 +45,7 @@ app.get('/recommendations', async (req, res) => {
 
   const result = await mealplanCollection.find({ calories: { $lt: averageCalories } }).sort({ restaurant: 1, calories: 1 });
 
-  const startPrompt = "Write a paragraph of less than 100 words which greets a user named" + req.session.name + "and tells him that" +
+  const startPrompt = "Write a paragraph of less than 100 words which greets a user named" + user.name + " tells him that" +
     "the following list is his recommendations, and summarizes the list"
 
   const completion = await openai.createCompletion({
