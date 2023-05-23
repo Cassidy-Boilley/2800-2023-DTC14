@@ -36,12 +36,12 @@
             <% } else { %>
                 <%- include ('partials/header.ejs') %>
                     <% } %>
-
+                    <div class="text-center py-5 my-5 px-4">
                         <h1> ChatBLT </h1>
                         <br>
-                        <h2> <%= intro%> </h2>
+                        <h2 class="lead"> <%= intro%> </h2>
                         <br>
-                        <h2> <%= welcomeMessage%> </h2>
+                        <h2 class="lead"> <%= welcomeMessage%> </h2>
                         <br>
                         <div id="homepageButtons" class="text-center d-grid gap-0.5">
                             <% if (!authenticated) { %>
@@ -69,6 +69,7 @@
 
                                         <% } %>
                         </div>
+                    </div>
                         <% if (name==='PythonLover3000' ) { %>
                             <%- include ('partials/dark-footer.ejs') %>
                                 <% } else { %>
