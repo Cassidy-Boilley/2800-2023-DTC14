@@ -45,14 +45,14 @@ app.get('/recommendations', async (req, res) => {
 
   const result = await mealplanCollection.find({ calories: { $lt: averageCalories } }).sort({ restaurant: 1, calories: 1 });
 
-  const startPrompt = "Write a paragraph of less than 100 words which greets a user named" + user.name + " tells him that" +
-    "the following list is his recommendations, and summarizes the list"
-
-  const completion = await openai.createCompletion({
+  const startPrompt = "Write a paragraph of less than 100 words which greets a user named" + user.name + 
+  " tells him that the following list is his recommendations, and summarizes the list\n"
+  const chatReturn = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: startPrompt + result,
     max_tokens: 150
-  });  
+  });
+  const message = chatReturn.data.choices[0].text  
 
   // async function runCompletion() {
   //   const completion = await openai.createCompletion({
@@ -65,7 +65,7 @@ app.get('/recommendations', async (req, res) => {
   // }
   // runCompletion();
 
-  res.render('recommendations.ejs', { authenticated: true, food: result, message: completion.data.choices[0].text, name: user.name });
+  res.render('recommendations.ejs', { authenticated: true, food: result, message: message, name: user.name });
 });
 
 //reuse of Josh's code
