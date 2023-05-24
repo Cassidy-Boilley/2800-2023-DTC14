@@ -82,3 +82,7 @@ label {
     background-color: #1e2124;
     color: black;
 }
+
+.modal-title {
+    color: white;
+}
