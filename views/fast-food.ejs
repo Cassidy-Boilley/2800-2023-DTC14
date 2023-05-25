@@ -16,18 +16,18 @@
             if (user.toLowerCase() === 'chris') {
                 var darkCSS = document.createElement('link');
                 darkCSS.rel = 'stylesheet';
-                darkCSS.href = '/css/dark.css';  // Replace with the correct path to your 'dark.css' file
+                darkCSS.href = '/css/dark.css';  
                 document.head.appendChild(darkCSS);
             }
         });
 
         // Pagination
         window.addEventListener('DOMContentLoaded', function () {
-            var itemsPerPage = 10; // Number of items to display per page
+            var itemsPerPage = 10; 
 
             var mealCards = document.querySelectorAll('.meal-card');
             var pagination = document.getElementById('pagination');
-            var currentPage = 1; // Current page, default is 1
+            var currentPage = 1; 
 
             function showPage(page) {
                 var startIndex = (page - 1) * itemsPerPage;
@@ -67,7 +67,6 @@
             });
 
             function createPaginationLinks() {
-                // Get the search query
                 var searchTerm = searchInput.value.toLowerCase();
 
                 // Filter the meal cards based on the search query
@@ -82,11 +81,8 @@
                 var totalPages = Math.ceil(totalItems / itemsPerPage);
                 var paginationHTML = '';
 
-
-                // First page button
                 paginationHTML += '<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="changePage(1)">First</a></li>';
 
-                // Previous page button
                 if (currentPage > 1) {
                     paginationHTML += '<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="changePage(' + (currentPage - 1) + ')">Previous</a></li>';
                 }
@@ -95,7 +91,6 @@
                 var minPage = Math.max(1, currentPage - 2);
                 var maxPage = Math.min(totalPages, currentPage + 2);
 
-                // Adjust minPage and maxPage to ensure there are always five pages displayed
                 if (maxPage - minPage < 4) {
                     if (maxPage === totalPages) {
                         minPage = Math.max(1, maxPage - 4);
@@ -112,12 +107,10 @@
                     }
                 }
 
-                // Next page button
                 if (currentPage < totalPages) {
                     paginationHTML += '<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="changePage(' + (currentPage + 1) + ')">Next</a></li>';
                 }
 
-                // Last page button
                 paginationHTML += '<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="changePage(' + totalPages + ')">Last</a></li>';
 
                 pagination.innerHTML = paginationHTML;
@@ -130,7 +123,6 @@
                 createPaginationLinks();
             };
 
-            // Initial page load
             showPage(currentPage);
             createPaginationLinks();
 
