@@ -108,3 +108,7 @@ input[type="password"]:focus {
     border-color: black;
     color: black;
 }
+
+.custom-hr {
+    border-color: white;
+}

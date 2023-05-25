@@ -16,22 +16,22 @@
             if (user.toLowerCase() === 'chris') {
                 var darkCSS = document.createElement('link');
                 darkCSS.rel = 'stylesheet';
-                darkCSS.href = '/css/dark.css';  
+                darkCSS.href = '/css/dark.css';
                 document.head.appendChild(darkCSS);
             }
         });
 
         function confirmRemoveFromFavorites(event) {
-            event.preventDefault(); 
+            event.preventDefault();
 
-            const mealId = event.target.elements.mealId.value; 
+            const mealId = event.target.elements.mealId.value;
             const confirmationModal = document.getElementById('confirmationModal');
             const mealIdInput = document.getElementById('mealIdInput');
 
-            mealIdInput.value = mealId; 
+            mealIdInput.value = mealId;
 
-            const bootstrapModal = new bootstrap.Modal(confirmationModal); 
-            bootstrapModal.show(); 
+            const bootstrapModal = new bootstrap.Modal(confirmationModal);
+            bootstrapModal.show();
         }
     </script>
 </head>
@@ -54,6 +54,12 @@
                                 <%- message%>
                             </div>
                         </section>
+                        <hr class="custom-hr">
+
+                        <form action='/deleteAll' method='post' class="container">
+                            <input type="hidden" id="mealIdInput" name="mealId" value="">
+                            <button type='submit' value='deleteAll' class="btn btn-danger"> Remove All </button>
+                        </form>
 
                         <% mealplan.forEach(meal=> {%>
                             <section>

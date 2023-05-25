@@ -93,8 +93,6 @@ app.get('/meal-plan', async (req, res) => {
             description: desc.description
         }));
 
-        console.log(descriptionArray);
-
         const username = req.session.loggedName;
 
         const startPrompt = `Write a paragraph of less than 120 words which greets a user named ${username}, tells him that the following list is his saved meals, and summarizes the list`;
@@ -174,5 +172,18 @@ app.post('/delete', async (req, res) => {
     });
     res.redirect('/meal-plan');
 });
+
+app.post('/deleteAll', async (req, res) => {
+    const mealId = req.body;
+    const userId = await usersModel.findOne({
+        email: req.session.loggedEmail
+    });
+
+    await mealplanCollection.deleteMany({
+        user_id: userId._id,
+    });
+    res.redirect('/meal-plan');
+});
+
 
 module.exports = app;
