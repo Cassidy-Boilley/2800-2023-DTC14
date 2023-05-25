@@ -20,38 +20,37 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-/** RUN THIS CODE ONCE TO GENERATE DESCRIPTIONS FOR ALL ITEMS
-app.get('/one-time', async (req, res) => {
-    const result = await fastfoodCollection.find();
+// USED FOR DESCRITPION GENERATION
+// app.get('/one-time', async (req, res) => {
+//     const result = await fastfoodCollection.find({ description: { $exists: false }})
 
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+//     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-    for (const item of result) {
-        const startPrompt = `Write a paragraph of 120 words or less which describes the ${item.item} from ${item.restaurant} in a way that would make a user want to eat it.`;
+//     for (const item of result) {
+//         const startPrompt = `Write a paragraph of 120 words or less which describes the ${item.item} from ${item.restaurant} in a way that would make a user want to eat it.`;
 
-        // Make API call after a delay of 1.5 seconds
-        await delay(2000);
+//         // Make API call after a delay of 1.5 seconds
+//         await delay(2000);
 
-        const completion = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: startPrompt,
-            max_tokens: 150
-        });
+//         const completion = await openai.createCompletion({
+//             model: "text-davinci-003",
+//             prompt: startPrompt,
+//             max_tokens: 150
+//         });
 
-        await fastfoodCollection.updateOne(
-            { item: item.item, restaurant: item.restaurant },
-            {
-                $set: 
-                {
-                    description: completion.data.choices[0].text
-                }
-            }
-        );
-        console.log("1 item done" + " " + item.item + " " + item.restaurant + " \n" + item.description);
-    }
-    res.send('Finished');
-});
-*/
+//         await fastfoodCollection.updateOne(
+//             { item: item.item, restaurant: item.restaurant },
+//             {
+//                 $set: 
+//                 {
+//                     description: completion.data.choices[0].text
+//                 }
+//             }
+//         );
+//         console.log("1 item done" + " " + item.item + " " + item.restaurant + " \n" + item.description);
+//     }
+//     res.send('Finished');
+// });
 
 
 app.get('/fast-food', async (req, res) => {
