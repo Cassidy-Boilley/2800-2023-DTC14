@@ -17,12 +17,14 @@
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/82e4826c76.js" crossorigin="anonymous"></script>
     <%- include ('partials/header.ejs') %>
-        <form action='/signup' method='post'>
-            <input type='text' name='name' placeholder='Enter your name' />
-            <input type='text' name='email' placeholder='Enter your email' />
-            <input type='text' name='password' placeholder='Enter your password' />
-            <input type='submit' value='Sign up' />
-        </form>
+        <div id="signup">
+            <form action='/signup' method='post'>
+                <input type='text' name='name' placeholder='Enter your name' />
+                <input type='text' name='email' placeholder='Enter your email' />
+                <input type='text' name='password' placeholder='Enter your password' />
+                <button type='submit' value='Signup' class="btn btn-primary"> Signup </button>
+            </form>
+        </div>
     <%- include ('partials/footer.ejs') %>
 </body>
 

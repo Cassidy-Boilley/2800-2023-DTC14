@@ -17,14 +17,15 @@
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/82e4826c76.js" crossorigin="anonymous"></script>
     <%- include ('partials/header.ejs') %>
-        <form action='/login' method='post'>
-            <input type='text' name='email' placeholder='Enter your email' />
-            <input type='password' name='password' placeholder='Enter your password' />
-            <button type='submit' value='Login' class="btn btn-primary"> Login </button>
-        </form>
-        <button type="button" class="btn btn-danger" onclick="window.location.href='/password-recovery'">Forgot
-            Password?</button>
-
+        <div id="login">
+            <form action='/login' method='post'>
+                <input type='text' name='email' placeholder='Enter your email' />
+                <input type='password' name='password' placeholder='Enter your password' />
+                <button type='submit' value='Login' class="btn btn-primary"> Login </button>
+            </form>
+            <button type="button" class="btn btn-danger" onclick="window.location.href='/password-recovery'">Forgot
+                Password?</button>
+        </div>
 
         <%- include ('partials/footer.ejs') %>
 </body>
