@@ -85,10 +85,15 @@ app.get('/meal-plan', async (req, res) => {
                 item: { $in: mealplanItems },
                 restaurant: { $in: mealplanRestaurants }
             },
-            { description: 1 }
+            { item: 1, description: 1 }
         );
 
-        const descriptionArray = descriptions.map((desc) => desc.description);
+        const descriptionArray = descriptions.map((desc) => ({
+            item: desc.item,
+            description: desc.description
+        }));
+
+        console.log(descriptionArray);
 
         const username = req.session.loggedName;
 
@@ -115,10 +120,6 @@ app.get('/meal-plan', async (req, res) => {
         res.redirect('/login');
     }
 });
-
-
-
-
 
 
 app.post('/saveMeal', async (req, res) => {
