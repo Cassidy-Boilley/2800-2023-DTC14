@@ -49,19 +49,14 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <form method="POST" action="/ascendingOrder">
-                                            <button class="dropdown-item" type="submit">Ascending Calorie Count</button>
+                                        <form method="POST" action="/isVegan">
+                                            <button class="dropdown-item" type="submit">Vegan Dishes</button>
                                         </form>
                                     </li>
-                                    <li>
-                                        <form method="POST" action="/descendingOrder">
-                                            <button class="dropdown-item" type="submit">Descending Calorie
-                                                Count</button>
-                                        </form>
-                                    </li>
+                                    
                                 </ul>
                             </div>
-
+                            <hr>
                             <!--Meal Cards-->
                             <% food.forEach(meal=> {%>
                                 <section class="meal-card">

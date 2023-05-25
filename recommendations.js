@@ -57,15 +57,15 @@ app.get('/recommendations', async (req, res) => {
   });
   const message = chatReturn.data.choices[0].text  
 
-  res.render('recommendations.ejs', { authenticated: true, food: result, message: message, name: user.name });
+  res.render('recommendations.ejs', { authenticated: true, food: result, message: message, name: user.name});
 });
 
-app.post('/ascendingOrder', async (req, res) => {
+app.post('/isVegan', async (req, res) => {
   const user = await usersModel.findOne({
     email: req.session.loggedEmail
   });
   console.log(averageCalories);
-  const result = await foodCollection.find({ calories: { $lt: averageCalories } }).limit(10).sort({ calories: 1 });
+  const result = await foodCollection.find({ vegan: true}).limit(10);
 
   const startPrompt = "Write a paragraph of less than 100 words which greets a user named" + user.name + 
   " tells him that the following list is his recommendations, and summarizes the list\n"
@@ -79,24 +79,6 @@ app.post('/ascendingOrder', async (req, res) => {
   res.render('recommendations.ejs', { authenticated: true, food: result, name: user.name, message: message });
 });
 
-app.post('/descendingOrder', async (req, res) => {
-  const user = await usersModel.findOne({
-    email: req.session.loggedEmail
-  });
-  
-  const result = await foodCollection.find({ calories: { $lt: averageCalories } }).limit(10).sort({ calories: -1 });
-
-  const startPrompt = "Write a paragraph of less than 100 words which greets a user named" + user.name + 
-  " tells him that the following list is his recommendations, and summarizes the list\n"
-  const chatReturn = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: startPrompt + result,
-    max_tokens: 150
-  });
-  const message = chatReturn.data.choices[0].text 
-
-  res.render('recommendations.ejs', { authenticated: true, food: result, name: user.name, message: message });
-});
 //reuse of Josh's code
 app.post('/save', async (req, res) => {
   const user = await usersModel.findOne({
