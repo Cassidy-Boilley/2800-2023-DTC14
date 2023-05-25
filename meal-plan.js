@@ -55,12 +55,16 @@ app.get('/one-time', async (req, res) => {
 
 
 app.get('/fast-food', async (req, res) => {
-    const userId = await usersModel.findOne({
-        email: req.session.loggedEmail
-    });
+    if (req.session.GLOBAL_AUTHENTICATED) {
+        const userId = await usersModel.findOne({
+            email: req.session.loggedEmail
+        });
 
-    const result = await fastfoodCollection.find();
-    res.render('fast-food.ejs', { fastfood: result, name: userId.name });
+        const result = await fastfoodCollection.find();
+        res.render('fast-food.ejs', { fastfood: result, name: userId.name });
+    } else {
+        res.redirect('/login');
+    }
 });
 
 app.get('/meal-plan', async (req, res) => {
