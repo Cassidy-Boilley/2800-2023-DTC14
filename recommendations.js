@@ -12,6 +12,8 @@ const usersModel = require('./models/users');
 const foodCollection = require('./models/foodcollection.js');
 const mealplanCollection = require('./models/mealplanCollection.js');
 
+let averageCalories = 0;
+
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,  
@@ -40,7 +42,7 @@ app.get('/recommendations', async (req, res) => {
   ]);
 
   const averageCaloriesDoc = await averageCaloriesCursor.exec();
-  const averageCalories = averageCaloriesDoc[0].averageCalories;
+  averageCalories = averageCaloriesDoc[0].averageCalories;
   console.log(averageCalories);
 
   const result = await foodCollection.find({ calories: { $lt: averageCalories } }).limit(10);
@@ -55,18 +57,28 @@ app.get('/recommendations', async (req, res) => {
   });
   const message = chatReturn.data.choices[0].text  
 
-  // async function runCompletion() {
-  //   const completion = await openai.createCompletion({
-  //     model: "text-davinci-003",
-  //     prompt: startPrompt + result,
-  //     max_tokens: 150
-  //   });
-  //   console.log(completion.data.choices[0].text)
-  //   res.render('recommendations.ejs', { authenticated: true, food: result, message: completion.data.choices[0].text, name: user.name });
-  // }
-  // runCompletion();
 
-  res.render('recommendations.ejs', { authenticated: true, food: result, message: message, name: user.name });
+  res.render('recommendations.ejs', { authenticated: true, food: result, message: message, name: user.name});
+});
+
+app.post('/isVegan', async (req, res) => {
+  const user = await usersModel.findOne({
+    email: req.session.loggedEmail
+  });
+  console.log(averageCalories);
+  const result = await foodCollection.find({ vegan: true}).limit(10);
+
+  const startPrompt = "Write a paragraph of less than 100 words which greets a user named" + user.name + 
+  " tells him that the following list is his recommendations, and summarizes the list\n"
+  const chatReturn = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: startPrompt + result,
+    max_tokens: 150
+  });
+  const message = chatReturn.data.choices[0].text 
+
+  res.render('recommendations.ejs', { authenticated: true, food: result, name: user.name, message: message });
+
 });
 
 //reuse of Josh's code
