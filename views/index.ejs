@@ -36,42 +36,36 @@
             <% } else { %>
                 <%- include ('partials/header.ejs') %>
                     <% } %>
-                        <div class="text-center py-5 my-5 px-4">
-                            <h1 class="display-1"> ChatBLT </h1>
-                            <br>
-                            <h2 class="lead">
-                                <%= intro%>
-                            </h2>
-                            <br>
-                            <p class="lead"><strong><em>
-                                        <%= welcomeMessage%>
-                                    </em></strong></p>
-                            <br>
-                            <div id="homepageButtons" class="text-center d-grid gap-0.5">
-                                <% if (!authenticated) { %>
-                                    <button type="button" class="btn btn-primary"
-                                        onclick="window.location.href='/login'">
-                                        Login </button>
-                                    <br>
-                                    <button type="button" class="btn btn-primary"
-                                        onclick="window.location.href='/signup'">
-                                        Sign up
-                                    </button>
-                                    <br>
-                                    <% } %>
-                                        <% if (authenticated) { %>
-                                            <button type="button" class="btn btn-primary"
-                                                onclick="window.location.href='/meal-plan'"> Favourites
+                    <div class="text-center py-5 my-5 px-4">
+                        <h1 class="display-1"> ChatBLT </h1>
+                        <br>
+                        <h2 class="lead"> <%= intro%> </h2>
+                        <br>
+                        <p class="lead"><strong><em><%= welcomeMessage%></em></strong></p>
+                        <br>
+                        <div id="homepageButtons" class="text-center d-grid gap-0.5">
+                            <% if (!authenticated) { %>
+                                <button type="button" class="btn btn-primary" onclick="window.location.href='/login'">
+                                    Login </button>
+                                <br>
+                                <button type="button" class="btn btn-primary" onclick="window.location.href='/signup'">
+                                    Sign up
+                                </button>
+                                <br>
+                                <% } %>
+                                    <% if (authenticated) { %>
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="window.location.href='/meal-plan'"> Your Saved Meals
+                                        </button>
+                                        <br>
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="window.location.href='/recommendations'">
+                                            Recommendations </button>
+                                        <br>
+                                        <form action="/logout" method="post" class="d-inline">
+                                            <button type="button" class="btn btn-primary" onclick="submit()"> Logout
                                             </button>
-                                            <br>
-                                            <button type="button" class="btn btn-primary"
-                                                onclick="window.location.href='/recommendations'">
-                                                Recommendations </button>
-                                            <br>
-                                            <form action="/logout" method="post" class="d-inline">
-                                                <button type="button" class="btn btn-primary" onclick="submit()"> Logout
-                                                </button>
-                                            </form>
+                                        </form>
 
                                             <% } %>
                             </div>
