@@ -119,5 +119,10 @@ app.post('/save', async (req, res) => {
     console.log(error);
   }
 });
-
+app.get("*", async (req, res) => {
+  const user = await usersModel.findOne({
+    email: req.session.loggedEmail
+  })
+  res.status(404).render('404.ejs', {name: user.name});
+});
 module.exports = app;
