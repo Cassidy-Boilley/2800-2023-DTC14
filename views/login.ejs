@@ -19,8 +19,8 @@
     <%- include ('partials/header.ejs') %>
         <div id="login">
             <form action='/login' method='post'>
-                <input type='text' name='email' placeholder='Enter your email' />
-                <input type='password' name='password' placeholder='Enter your password' />
+                <input type='text' name='email' placeholder='* Enter your email' />
+                <input type='password' name='password' placeholder='* Enter your password' />
                 <button type='submit' value='Login' class="btn btn-primary"> Login </button>
             </form>
             <button type="button" class="btn btn-danger d-inline" onclick="window.location.href='/signup'"> Signup</button>
