@@ -92,3 +92,19 @@ input[type="email"]:focus,
 input[type="password"]:focus {
     color: black !important;
 }
+
+.page-link {
+    background-color: #1e2124;
+    color: white;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #36393e;
+    border-color: black;
+}
+
+.pagination .page-item:not(.active):hover .page-link {
+    background-color: white;
+    border-color: black;
+    color: black;
+}
