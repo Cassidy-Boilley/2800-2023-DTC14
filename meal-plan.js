@@ -20,9 +20,51 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/fast-food', async (req, res) => {
+/** RUN THIS CODE ONCE TO GENERATE DESCRIPTIONS FOR ALL ITEMS
+app.get('/one-time', async (req, res) => {
     const result = await fastfoodCollection.find();
-    res.render('fast-food.ejs', { fastfood: result });
+
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    for (const item of result) {
+        const startPrompt = `Write a paragraph of 120 words or less which describes the ${item.item} from ${item.restaurant} in a way that would make a user want to eat it.`;
+
+        // Make API call after a delay of 1.5 seconds
+        await delay(2000);
+
+        const completion = await openai.createCompletion({
+            model: "text-davinci-003",
+            prompt: startPrompt,
+            max_tokens: 150
+        });
+
+        await fastfoodCollection.updateOne(
+            { item: item.item, restaurant: item.restaurant },
+            {
+                $set: 
+                {
+                    description: completion.data.choices[0].text
+                }
+            }
+        );
+        console.log("1 item done" + " " + item.item + " " + item.restaurant + " \n" + item.description);
+    }
+    res.send('Finished');
+});
+*/
+
+
+app.get('/fast-food', async (req, res) => {
+    if (req.session.GLOBAL_AUTHENTICATED) {
+        const userId = await usersModel.findOne({
+            email: req.session.loggedEmail
+        });
+
+        const result = await fastfoodCollection.find();
+        res.render('fast-food.ejs', { fastfood: result, name: userId.name });
+    } else {
+        res.redirect('/login');
+    }
 });
 
 app.get('/meal-plan', async (req, res) => {
@@ -47,7 +89,7 @@ app.get('/meal-plan', async (req, res) => {
                 max_tokens: 150
             });
             console.log(completion.data.choices[0].text)
-            res.render('meal-plan.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, mealplan: result, message: completion.data.choices[0].text });
+            res.render('meal-plan.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, mealplan: result, message: completion.data.choices[0].text, name: userId.name });
         }
         runCompletion();
     } else {
@@ -59,7 +101,7 @@ app.post('/saveMeal', async (req, res) => {
     const mealId = req.body;
 
     const userId = await usersModel.findOne({
-        email: req.session.loggedEmail //CHANGE THIS WHEN LOGIN IS IMPLEMENTED
+        email: req.session.loggedEmail
     });
 
     const result = await fastfoodCollection.findOne({

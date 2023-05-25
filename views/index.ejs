@@ -11,6 +11,18 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link href="/css/basic.css" rel="stylesheet">
     <link href="/css/index.css" rel="stylesheet">
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var user = "<%= name %>";
+
+            if (user === 'PythonLover3000') {
+                var darkCSS = document.createElement('link');
+                darkCSS.rel = 'stylesheet';
+                darkCSS.href = '/css/dark.css';  // Replace with the correct path to your 'dark.css' file
+                document.head.appendChild(darkCSS);
+            }
+        });
+    </script>
 </head>
 
 
@@ -19,30 +31,50 @@
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/82e4826c76.js" crossorigin="anonymous"></script>
-    <%- include ('partials/header.ejs') %>
-
-        <h1> Homepage </h1>
-        <div id="homepageButtons" class="text-center d-grid gap-0.5">
-            <% if (!authenticated) { %>
-                <button type="button" class="btn btn-primary" onclick="window.location.href='/login'"> Login </button>
-                <br>
-                <button type="button" class="btn btn-primary" onclick="window.location.href='/signup'"> Sign up
-                </button>
-                <br>
-                <% } %>
-                    <% if (authenticated) { %>
-                        <button type="button" class="btn btn-primary" onclick="window.location.href='/history'"> History
-                        </button>
+    <% if (name==='PythonLover3000' ) { %>
+        <%- include ('partials/dark-header.ejs') %>
+            <% } else { %>
+                <%- include ('partials/header.ejs') %>
+                    <% } %>
+                    <div class="text-center py-5 my-5 px-4">
+                        <h1 class="display-1"> ChatBLT </h1>
                         <br>
-                        <button type="button" class="btn btn-primary" onclick="window.location.href='/recommendations'"> Recommendations </button>
+                        <h2 class="lead"> <%= intro%> </h2>
                         <br>
-                        <form action="/logout" method="post" class="d-inline">
-                            <button type="button" class="btn btn-primary" onclick="submit()"> Logout </button>
-                        </form>
+                        <p class="lead"><strong><em><%= welcomeMessage%></em></strong></p>
+                        <br>
+                        <div id="homepageButtons" class="text-center d-grid gap-0.5">
+                            <% if (!authenticated) { %>
+                                <button type="button" class="btn btn-primary" onclick="window.location.href='/login'">
+                                    Login </button>
+                                <br>
+                                <button type="button" class="btn btn-primary" onclick="window.location.href='/signup'">
+                                    Sign up
+                                </button>
+                                <br>
+                                <% } %>
+                                    <% if (authenticated) { %>
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="window.location.href='/meal-plan'"> Your Saved Meals
+                                        </button>
+                                        <br>
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="window.location.href='/recommendations'">
+                                            Recommendations </button>
+                                        <br>
+                                        <form action="/logout" method="post" class="d-inline">
+                                            <button type="button" class="btn btn-primary" onclick="submit()"> Logout
+                                            </button>
+                                        </form>
 
-                        <% } %>
-        </div>
-        <%- include ('partials/footer.ejs') %>
+                                            <% } %>
+                            </div>
+                        </div>
+                        <% if (name==='PythonLover3000' ) { %>
+                            <%- include ('partials/dark-footer.ejs') %>
+                                <% } else { %>
+                                    <%- include ('partials/footer.ejs') %>
+                                        <% } %>
 
 </body>
 

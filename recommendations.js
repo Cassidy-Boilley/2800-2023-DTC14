@@ -57,6 +57,7 @@ app.get('/recommendations', async (req, res) => {
   });
   const message = chatReturn.data.choices[0].text  
 
+
   res.render('recommendations.ejs', { authenticated: true, food: result, message: message, name: user.name});
 });
 
@@ -77,6 +78,7 @@ app.post('/isVegan', async (req, res) => {
   const message = chatReturn.data.choices[0].text 
 
   res.render('recommendations.ejs', { authenticated: true, food: result, name: user.name, message: message });
+
 });
 
 //reuse of Josh's code
