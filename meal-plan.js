@@ -132,33 +132,44 @@ app.post('/saveMeal', async (req, res) => {
     });
 
     try {
-        const addToMealPlan = new mealplanCollection({
+        const existingMeal = await mealplanCollection.findOne({
             restaurant: result.restaurant,
             item: result.item,
-            calories: result.calories,
-            cal_fat: result.cal_fat,
-            total_fat: result.total_fat,
-            sat_fat: result.sat_fat,
-            trans_fat: result.trans_fat,
-            cholesterol: result.cholesterol,
-            sodium: result.sodium,
-            total_carb: result.total_carb,
-            fiber: result.fiber,
-            sugar: result.sugar,
-            protein: result.protein,
-            vit_a: result.vit_a,
-            vit_c: result.vit_c,
-            calcium: result.calcium,
-            salad: result.salad,
-            vegan: result.vegan,
             user_id: userId._id,
         });
-        await addToMealPlan.save();
-        res.redirect('/fast-food');
+
+        if (existingMeal) {
+            res.redirect('/fast-food');
+        } else {
+            const addToMealPlan = new mealplanCollection({
+                restaurant: result.restaurant,
+                item: result.item,
+                calories: result.calories,
+                cal_fat: result.cal_fat,
+                total_fat: result.total_fat,
+                sat_fat: result.sat_fat,
+                trans_fat: result.trans_fat,
+                cholesterol: result.cholesterol,
+                sodium: result.sodium,
+                total_carb: result.total_carb,
+                fiber: result.fiber,
+                sugar: result.sugar,
+                protein: result.protein,
+                vit_a: result.vit_a,
+                vit_c: result.vit_c,
+                calcium: result.calcium,
+                salad: result.salad,
+                vegan: result.vegan,
+                user_id: userId._id,
+            });
+            await addToMealPlan.save();
+            res.redirect('/fast-food');
+        }
     } catch (error) {
         console.log(error);
     }
 });
+
 
 app.post('/delete', async (req, res) => {
     const mealId = req.body;
