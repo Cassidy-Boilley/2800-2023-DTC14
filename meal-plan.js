@@ -97,7 +97,7 @@ app.post('/saveMeal', async (req, res) => {
     const mealId = req.body;
 
     const userId = await usersModel.findOne({
-        email: req.session.loggedEmail //CHANGE THIS WHEN LOGIN IS IMPLEMENTED
+        email: req.session.loggedEmail
     });
 
     const result = await fastfoodCollection.findOne({
