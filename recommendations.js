@@ -28,7 +28,8 @@ app.get('/', (req, res) => {
 );
 
 app.get('/recommendations', async (req, res) => {
-  const user = await usersModel.findOne({
+  if(req.session.GLOBAL_AUTHENTICATED) {
+    const user = await usersModel.findOne({
     email: req.session.loggedEmail
   })
 
@@ -58,32 +59,39 @@ app.get('/recommendations', async (req, res) => {
   const message = chatReturn.data.choices[0].text  
 
 
-  res.render('recommendations.ejs', { authenticated: true, food: result, message: message, name: user.name});
+    res.render('recommendations.ejs', { authenticated: true, food: result, message: message, name: user.name });
+  } else {
+    res.redirect('/login');
+  }
 });
 
 app.post('/isVegan', async (req, res) => {
-  const user = await usersModel.findOne({
+  if(req.session.GLOBAL_AUTHENTICATED){
+    const user = await usersModel.findOne({
     email: req.session.loggedEmail
-  });
-  console.log(averageCalories);
-  const result = await foodCollection.find({ vegan: true}).limit(10);
+    });
+    console.log(averageCalories);
+    const result = await foodCollection.find({ vegan: true}).limit(10);
 
-  const startPrompt = "Write a paragraph of less than 100 words which greets a user named" + user.name + 
-  " tells him that the following list is his recommendations, and summarizes the list\n"
-  const chatReturn = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: startPrompt + result,
-    max_tokens: 150
-  });
-  const message = chatReturn.data.choices[0].text 
+    const startPrompt = "Write a paragraph of less than 100 words which greets a user named" + user.name + 
+    " tells him that the following list is his recommendations, and summarizes the list\n"
+    const chatReturn = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: startPrompt + result,
+      max_tokens: 150
+    });
+    const message = chatReturn.data.choices[0].text 
 
-  res.render('recommendations.ejs', { authenticated: true, food: result, name: user.name, message: message });
+      res.render('recommendations.ejs', { authenticated: true, food: result, name: user.name, message: message });
+    } else {
+      res.redirect('/login');
+  }
 
 });
 
-//reuse of Josh's code
 app.post('/save', async (req, res) => {
-  const user = await usersModel.findOne({
+  if(req.session.GLOBAL_AUTHENTICATED){
+    const user = await usersModel.findOne({
     email: req.session.loggedEmail
   })
   const mealId = req.body;
@@ -117,12 +125,21 @@ app.post('/save', async (req, res) => {
     res.redirect('/recommendations');
   } catch (error) {
     console.log(error);
-  }
+    }
+  } else {
+    res.redirect('/login');
+  } 
+
 });
+
 app.get("*", async (req, res) => {
-  const user = await usersModel.findOne({
+  if(req.session.GLOBAL_AUTHENTICATED) {
+    const user = await usersModel.findOne({
     email: req.session.loggedEmail
   })
-  res.status(404).render('404.ejs', {name: user.name});
+    res.status(404).render('404.ejs', { name: user.name });
+  } else {
+    res.redirect('/login');
+  } 
 });
 module.exports = app;
