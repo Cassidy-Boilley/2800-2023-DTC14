@@ -33,7 +33,7 @@ app.get('/recommendations', async (req, res) => {
   const averageCaloriesCursor = mealplanCollection.aggregate([
     {
       $group: {
-        _id: null,
+        _id: user._id,
         averageCalories: { $avg: "$calories" }
       }
     }
@@ -43,7 +43,8 @@ app.get('/recommendations', async (req, res) => {
   const averageCalories = averageCaloriesDoc[0].averageCalories;
   console.log(averageCalories);
 
-  const result = await mealplanCollection.find({ calories: { $lt: averageCalories } }).sort({ restaurant: 1, calories: 1 });
+  const result = await foodCollection.find({ calories: { $lt: averageCalories } }).limit(10);
+  
 
   const startPrompt = "Write a paragraph of less than 100 words which greets a user named" + user.name + 
   " tells him that the following list is his recommendations, and summarizes the list\n"
@@ -70,6 +71,9 @@ app.get('/recommendations', async (req, res) => {
 
 //reuse of Josh's code
 app.post('/save', async (req, res) => {
+  const user = await usersModel.findOne({
+    email: req.session.loggedEmail
+  })
   const mealId = req.body;
   const result = await foodCollection.findOne({
     _id: mealId.mealId
@@ -95,6 +99,7 @@ app.post('/save', async (req, res) => {
       calcium: result.calcium,
       salad: result.salad,
       vegan: result.vegan,
+      user_id: user._id,
     });
     await addToMealPlan.save();
     res.redirect('/recommendations');
