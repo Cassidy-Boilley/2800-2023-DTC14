@@ -16,10 +16,23 @@
             if (user.toLowerCase() === 'chris') {
                 var darkCSS = document.createElement('link');
                 darkCSS.rel = 'stylesheet';
-                darkCSS.href = '/css/dark.css';  // Replace with the correct path to your 'dark.css' file
+                darkCSS.href = '/css/dark.css';  
                 document.head.appendChild(darkCSS);
             }
         });
+
+        function confirmRemoveFromFavorites(event) {
+            event.preventDefault(); 
+
+            const mealId = event.target.elements.mealId.value; 
+            const confirmationModal = document.getElementById('confirmationModal');
+            const mealIdInput = document.getElementById('mealIdInput');
+
+            mealIdInput.value = mealId; 
+
+            const bootstrapModal = new bootstrap.Modal(confirmationModal); 
+            bootstrapModal.show(); 
+        }
     </script>
 </head>
 
@@ -119,12 +132,14 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <form action="/delete" method="post" class="d-inline">
+                                            <form class="d-inline" onsubmit="confirmRemoveFromFavorites(event)">
                                                 <input type="hidden" name="mealId" value="<%= meal._id %>">
-                                                <button class="btn btn-danger" value="meal">Remove from Favourites</button>
+                                                <button class="btn btn-danger" value="meal">Remove from
+                                                    Favorites</button>
                                             </form>
                                             <!-- Description Button -->
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#<%= meal._id %>DescriptionModal">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#<%= meal._id %>DescriptionModal">
                                                 Description
                                             </button>
                                             <!-- Description Modal -->
@@ -133,11 +148,12 @@
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title">Description</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <% descriptions.forEach(desc=> { %>
-                                                                <% if (desc.item === meal.item) { %>
+                                                                <% if (desc.item===meal.item) { %>
                                                                     <a>
                                                                         <%= desc.description %>
                                                                     </a>
@@ -145,7 +161,8 @@
                                                                         <% }); %>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -158,6 +175,29 @@
 
                                 <div class="empty-space p-5"></div>
 
+                                <!-- Confirmation Modal -->
+                                <div class="modal" id="confirmationModal" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Confirmation</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to remove this item from your favorites?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form action="/delete" method="post" class="d-inline">
+                                                    <input type="hidden" id="mealIdInput" name="mealId" value="">
+                                                    <button type="submit" class="btn btn-danger">Remove</button>
+                                                </form>
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <% if (name.toLowerCase()==='chris' ) { %>
                                     <%- include ('partials/dark-footer.ejs') %>
