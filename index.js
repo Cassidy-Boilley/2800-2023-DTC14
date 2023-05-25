@@ -69,10 +69,10 @@ app.get('/signup', (req, res) => {
 
 /**
  * The following block of code is from a COMP2537 assignment, with some modifications.
- * The modifications include the following: TODO: update modifications
- * - Removed a field from the user model
- * - Remove assignment of schema validation to a variable
- * - TODO: change a href to button in error message
+ * The modifications include the following:
+ * - Add field city to user model
+ * - Remove type from user model
+ * - Update <a> tags to use bootstrap styling
  */
 app.post('/signup', async (req, res) => {
     try {
@@ -86,7 +86,7 @@ app.post('/signup', async (req, res) => {
     } catch (err) {
         res.send(`
         <h1> ${err.details[0].message} </h1>
-        <a href='/signup'> Try again. </a>
+        <a class='btn btn-primary' href='/signup'> Try again. </a>
         `);
         return;
     };
@@ -107,7 +107,7 @@ app.post('/signup', async (req, res) => {
         } else {
             res.send(`
             <h1> Email already exists. </h1>
-            <a href='/signup'> Try again. </a>
+            <a class='btn btn-primary' href='/signup'> Try again. </a>
             `)
         }
     } catch (err) {
@@ -124,11 +124,11 @@ app.get('/login', (req, res) => {
 
 /**
  * The following block of code is from a COMP2537 assignment, with some modifications.
- * The modifications include the following: TODO: update modifications
+ * The modifications include the following:
  * - Remove console.log message with password
  * - Remove assignment of schema validation to a variable
  * - Update redirect link on login success
- * - TODO: change a href to button in error message
+ * - Update <a> tags to use bootstrap styling
  * - Removed loggedType from session
  */
 app.post('/login', async (req, res) => {
@@ -142,7 +142,7 @@ app.post('/login', async (req, res) => {
         console.log(err);
         res.send(`
         <h1> ${err.details[0].message} </h1>
-        <a href='/login'> Try again. </a>
+        <a class='btn btn-primary' href='/login'> Try again. </a>
         `)
         return;
     };
@@ -155,7 +155,7 @@ app.post('/login', async (req, res) => {
         if (result === null) {
             res.send(`
             <h1> Invalid email/password combination. </h1>
-            <a href='/login'> Try again. </a>
+            <a class='btn btn-primary' href='/login'> Try again. </a>
             `);
         } else if (bcrypt.compareSync(req.body.password, result?.password)) {
             req.session.GLOBAL_AUTHENTICATED = true;
@@ -169,7 +169,7 @@ app.post('/login', async (req, res) => {
         } else {
             res.send(`
             <h1> Invalid email/password combination. </h1>
-            <a href='/login'> Try again. </a>
+            <a class='btn btn-primary' href='/login'> Try again. </a>
             `);
         }
     } catch (err) {
@@ -198,7 +198,7 @@ app.post("/password-recovery", async (req, res) => {
     } else {
         res.send(`
         <h1> Invalid email. </h1>
-        <a href='/password-recovery'> Try again. </a>
+        <a class='btn btn-primary' href='/password-recovery'> Try again. </a>
         `);
     }
 });
