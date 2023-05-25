@@ -185,5 +185,4 @@ app.post('/deleteAll', async (req, res) => {
     res.redirect('/meal-plan');
 });
 
-
 module.exports = app;
