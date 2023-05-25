@@ -22,7 +22,7 @@
         });
 
         // Pagination
-        document.addEventListener('DOMContentLoaded', function () {
+        window.addEventListener('DOMContentLoaded', function () {
             var itemsPerPage = 10; // Number of items to display per page
 
             var mealCards = document.querySelectorAll('.meal-card');
@@ -33,23 +33,55 @@
                 var startIndex = (page - 1) * itemsPerPage;
                 var endIndex = page * itemsPerPage;
 
+                // Get the search query
+                var searchTerm = document.getElementById('search-input').value.toLowerCase();
+
+                // Filter the meal cards based on the search query
+                var filteredMealCards = Array.from(mealCards).filter(function (mealCard) {
+                    var mealTitle = mealCard.querySelector('.card-title').textContent.toLowerCase();
+                    var mealRestaurant = mealCard.querySelector('.card-text').textContent.toLowerCase();
+
+                    return mealTitle.includes(searchTerm) || mealRestaurant.includes(searchTerm);
+                });
+
                 // Hide all meal cards
                 mealCards.forEach(function (mealCard) {
                     mealCard.style.display = 'none';
                 });
 
-                // Display meal cards for the current page
+                // Display the filtered meal cards for the current page
                 for (var i = startIndex; i < endIndex; i++) {
-                    if (mealCards[i]) {
-                        mealCards[i].style.display = 'block';
+                    var filteredMealCard = filteredMealCards[i];
+                    if (filteredMealCard) {
+                        filteredMealCard.style.display = 'block';
                     }
                 }
             }
 
+            // Event listener for search input
+            var searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', function () {
+                currentPage = 1; // Reset to the first page when the search input changes
+                showPage(currentPage);
+                createPaginationLinks();
+            });
+
             function createPaginationLinks() {
-                var totalItems = mealCards.length;
+                // Get the search query
+                var searchTerm = searchInput.value.toLowerCase();
+
+                // Filter the meal cards based on the search query
+                var filteredMealCards = Array.from(mealCards).filter(function (mealCard) {
+                    var mealTitle = mealCard.querySelector('.card-title').textContent.toLowerCase();
+                    var mealRestaurant = mealCard.querySelector('.card-text').textContent.toLowerCase();
+
+                    return mealTitle.includes(searchTerm) || mealRestaurant.includes(searchTerm);
+                });
+
+                var totalItems = filteredMealCards.length;
                 var totalPages = Math.ceil(totalItems / itemsPerPage);
                 var paginationHTML = '';
+
 
                 // First page button
                 paginationHTML += '<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="changePage(1)">First</a></li>';
