@@ -10,6 +10,19 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link href="/css/index.css" rel="stylesheet">
     <link href="/css/basic.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/82e4826c76.js" crossorigin="anonymous"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var user = "<%= name %>";
+
+            if (user.toLowerCase() === 'chris') {
+                var darkCSS = document.createElement('link');
+                darkCSS.rel = 'stylesheet';
+                darkCSS.href = '/css/dark.css';  // Replace with the correct path to your 'dark.css' file
+                document.head.appendChild(darkCSS);
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -18,105 +31,135 @@
         crossorigin="anonymous"></script>
 
 
-    <%- include ('partials/header.ejs') %>
-        <h1> Recommendations </h1>
-        <%= message %>
-        
-        <hr class="solid">
-
-        <!-- insert recommendation by -->
-        <!--Meal Cards-->
-        <% food.forEach(meal=> {%>
-            <section class="meal-card">
-                <!-- Meal card content -->
-                <div class="container p-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <%= meal.item%>
-                            </h5>
-                            <p class="card-text">
-                                <%= meal.restaurant%>
+    <% if (name.toLowerCase()==='chris' ) { %>
+        <%- include ('partials/dark-header.ejs') %>
+            <% } else { %>
+                <%- include ('partials/header.ejs') %>
+                    <% } %>
+                        <div class="my-5 px-4">
+                            <h1 class="display-4 fw-bold"> Recommendations </h1>
+                            <p class="lead text-center">
+                                <%= message %>
                             </p>
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#<%= meal._id %>">
-                                See more
-                            </button>
-        
-                            <!-- Modal -->
-                            <div class="modal fade" id="<%= meal._id %>" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                                <%= meal.restaurant%> - <%= meal.item%>
-                                            </h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-        
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p>Calories: <%= meal.calories%>
-                                                    </p>
-                                                    <p>Cal Fat: <%= meal.cal_fat%>
-                                                    </p>
-                                                    <p>Total Fat: <%= meal.total_fat%>
-                                                    </p>
-                                                    <p>Saturated Fat: <%= meal.sat_fat%>
-                                                    </p>
-                                                    <p>Trans Fat: <%= meal.trans_fat%>
-                                                    </p>
-                                                    <p>Cholesterol: <%= meal.cholesterol%>
-                                                    </p>
-                                                    <p>Sodium: <%= meal.sodium%>
-                                                    </p>
-                                                    <p>Carbs: <%= meal.total_carb%>
-                                                    </p>
+
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Sort By
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <form method="POST" action="/ascendingOrder">
+                                            <button class="dropdown-item" type="submit">Ascending Calorie Count</button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form method="POST" action="/descendingOrder">
+                                            <button class="dropdown-item" type="submit">Descending Calorie
+                                                Count</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!--Meal Cards-->
+                            <% food.forEach(meal=> {%>
+                                <section class="meal-card">
+                                    <!-- Meal card content -->
+                                    <div class="container p-3">
+                                        <div class="card meal-cards">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <%= meal.item%>
+                                                </h5>
+                                                <p class="card-text">
+                                                    <%= meal.restaurant%>
+                                                </p>
+                                                <!-- Button trigger modal -->
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#<%= meal._id %>">
+                                                    See more
+                                                </button>
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="<%= meal._id %>" tabindex="-1"
+                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                                    <%= meal.restaurant%> - <%= meal.item%>
+                                                                </h1>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <p>Calories: <%= meal.calories%>
+                                                                        </p>
+                                                                        <p>Cal Fat: <%= meal.cal_fat%>
+                                                                        </p>
+                                                                        <p>Total Fat: <%= meal.total_fat%>
+                                                                        </p>
+                                                                        <p>Saturated Fat: <%= meal.sat_fat%>
+                                                                        </p>
+                                                                        <p>Trans Fat: <%= meal.trans_fat%>
+                                                                        </p>
+                                                                        <p>Cholesterol: <%= meal.cholesterol%>
+                                                                        </p>
+                                                                        <p>Sodium: <%= meal.sodium%>
+                                                                        </p>
+                                                                        <p>Carbs: <%= meal.total_carb%>
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <p>Fiber: <%= meal.fiber%>
+                                                                        </p>
+                                                                        <p>Sugar: <%= meal.sugar%>
+                                                                        </p>
+                                                                        <p>Protein: <%= meal.protein%>
+                                                                        </p>
+                                                                        <p>Vitamin A: <%= meal.vit_a%>
+                                                                        </p>
+                                                                        <p>Vitamin C: <%= meal.vit_c%>
+                                                                        </p>
+                                                                        <p>Calcium: <%= meal.calcium%>
+                                                                        </p>
+                                                                        <p>Salad: <%= meal.salad%>
+                                                                        </p>
+                                                                        <p>Vegan: <%= meal.vegan%>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="col-6">
-                                                    <p>Fiber: <%= meal.fiber%>
-                                                    </p>
-                                                    <p>Sugar: <%= meal.sugar%>
-                                                    </p>
-                                                    <p>Protein: <%= meal.protein%>
-                                                    </p>
-                                                    <p>Vitamin A: <%= meal.vit_a%>
-                                                    </p>
-                                                    <p>Vitamin C: <%= meal.vit_c%>
-                                                    </p>
-                                                    <p>Calcium: <%= meal.calcium%>
-                                                    </p>
-                                                    <p>Salad: <%= meal.salad%>
-                                                    </p>
-                                                    <p>Vegan: <%= meal.vegan%>
-                                                    </p>
-                                                </div>
+                                                <form action="/save" method="post" class="d-inline">
+                                                    <input type="hidden" name="mealId" value="<%= meal._id %>">
+                                                    <button class="btn btn-danger" value="meal">Save to Meal
+                                                        Plans</button>
+                                                </form>
                                             </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Close</button>
-                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <form action="/save" method="post" class="d-inline">
-                                <input type="hidden" name="mealId" value="<%= meal._id %>">
-                                <button class="btn btn-danger" value="meal">Save to Meal Plans</button>
-                            </form>
+                                </section>
+                                <%});%>
+                                    <br>
+                                    <br>
+                                    <br>
                         </div>
-                    </div>
-                </div>
-            </section>
-            <%});%>
-            <br>
-            <br>
-            <br>
-        <%- include ('partials/footer.ejs') %>
+                        <% if (name.toLowerCase()==='chris' ) { %>
+                            <%- include ('partials/dark-footer.ejs') %>
+                                <% } else { %>
+                                    <%- include ('partials/footer.ejs') %>
+                                        <% } %>
 </body>
 
 </html>
