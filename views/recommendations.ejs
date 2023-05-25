@@ -90,65 +90,79 @@
                                                             </div>
                                                             <div class="modal-body">
 
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                        <p>Calories: <%= meal.calories%>
-                                                                        </p>
-                                                                        <p>Cal Fat: <%= meal.cal_fat%>
-                                                                        </p>
-                                                                        <p>Total Fat: <%= meal.total_fat%>
-                                                                        </p>
-                                                                        <p>Saturated Fat: <%= meal.sat_fat%>
-                                                                        </p>
-                                                                        <p>Trans Fat: <%= meal.trans_fat%>
-                                                                        </p>
-                                                                        <p>Cholesterol: <%= meal.cholesterol%>
-                                                                        </p>
-                                                                        <p>Sodium: <%= meal.sodium%>
-                                                                        </p>
-                                                                        <p>Carbs: <%= meal.total_carb%>
-                                                                        </p>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <p>Fiber: <%= meal.fiber%>
-                                                                        </p>
-                                                                        <p>Sugar: <%= meal.sugar%>
-                                                                        </p>
-                                                                        <p>Protein: <%= meal.protein%>
-                                                                        </p>
-                                                                        <p>Vitamin A: <%= meal.vit_a%>
-                                                                        </p>
-                                                                        <p>Vitamin C: <%= meal.vit_c%>
-                                                                        </p>
-                                                                        <p>Calcium: <%= meal.calcium%>
-                                                                        </p>
-                                                                        <p>Salad: <%= meal.salad%>
-                                                                        </p>
-                                                                        <p>Vegan: <%= meal.vegan%>
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">Close</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Calories: <%= meal.calories%>
+                                                    </p>
+                                                    <p>Cal Fat: <%= meal.cal_fat%>
+                                                    </p>
+                                                    <p>Total Fat: <%= meal.total_fat%>
+                                                    </p>
+                                                    <p>Saturated Fat: <%= meal.sat_fat%>
+                                                    </p>
+                                                    <p>Trans Fat: <%= meal.trans_fat%>
+                                                    </p>
+                                                    <p>Cholesterol: <%= meal.cholesterol%>
+                                                    </p>
+                                                    <p>Sodium: <%= meal.sodium%>
+                                                    </p>
+                                                    <p>Carbs: <%= meal.total_carb%>
+                                                    </p>
                                                 </div>
-                                                <form action="/save" method="post" class="d-inline">
-                                                    <input type="hidden" name="mealId" value="<%= meal._id %>">
-                                                    <button class="btn btn-danger" value="meal">Save to Meal
-                                                        Plans</button>
-                                                </form>
+                                                <div class="col-6">
+                                                    <p>Fiber: <%= meal.fiber%>
+                                                    </p>
+                                                    <p>Sugar: <%= meal.sugar%>
+                                                    </p>
+                                                    <p>Protein: <%= meal.protein%>
+                                                    </p>
+                                                    <p>Vitamin A: <%= meal.vit_a%>
+                                                    </p>
+                                                    <p>Vitamin C: <%= meal.vit_c%>
+                                                    </p>
+                                                    <p>Calcium: <%= meal.calcium%>
+                                                    </p>
+                                                    <p>Salad: <%= meal.salad%>
+                                                    </p>
+                                                    <p>Vegan: <%= meal.vegan%>
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                        </div>
                                     </div>
-
                                 </div>
                             </div>
-                        
+
+                            <form action="/save" method="post" class="d-inline">
+                                <input type="hidden" name="mealId" value="<%= meal._id %>">
+                                <button class="btn btn-danger" value="meal">Save to Meal
+                                    Plans</button>
+                            </form>
+                            <!-- Description Button -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#<%= meal._id %>DescriptionModal">
+                                Description
+                            </button>
+                            <!-- Description Modal -->
+                            <div class="modal" id="<%= meal._id %>DescriptionModal" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Description</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <%= meal.description %>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

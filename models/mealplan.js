@@ -20,8 +20,8 @@ const databaseSchema = new mongoose.Schema({
     vegan: Boolean,
     description: String
 },
-    { collection: 'fastfood' });
+    { collection: 'mealplans' });
 
-const databaseModel = mongoose.model('recommendations', databaseSchema);
+const databaseModel = mongoose.model('mealplans', databaseSchema);
 
 module.exports = databaseModel;
