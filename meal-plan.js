@@ -52,7 +52,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //     res.send('Finished');
 // });
 
-
+// Meal plan page
 app.get('/fast-food', async (req, res) => {
     if (req.session.GLOBAL_AUTHENTICATED) {
         const userId = await usersModel.findOne({
@@ -66,19 +66,20 @@ app.get('/fast-food', async (req, res) => {
     }
 });
 
+// Meal plan
 app.get('/meal-plan', async (req, res) => {
     if (req.session.GLOBAL_AUTHENTICATED) {
         const userId = await usersModel.findOne({
             email: req.session.loggedEmail
         });
 
+        // Get all meals from the meal plan
         const result = await mealplanCollection.find({
             user_id: userId._id
         });
 
         const mealplanItems = result.map((mealplan) => mealplan.item);
         const mealplanRestaurants = result.map((mealplan) => mealplan.restaurant);
-
         const descriptions = await fastfoodCollection.find(
             {
                 item: { $in: mealplanItems },
@@ -87,6 +88,7 @@ app.get('/meal-plan', async (req, res) => {
             { item: 1, description: 1 }
         );
 
+        // Create an array of objects with only the item and description
         const descriptionArray = descriptions.map((desc) => ({
             item: desc.item,
             description: desc.description
@@ -118,7 +120,7 @@ app.get('/meal-plan', async (req, res) => {
     }
 });
 
-
+// Add to meal plan
 app.post('/saveMeal', async (req, res) => {
     const mealId = req.body;
 
@@ -169,7 +171,7 @@ app.post('/saveMeal', async (req, res) => {
     }
 });
 
-
+// Delete a meal from the meal plan
 app.post('/delete', async (req, res) => {
     const mealId = req.body;
     const userId = await usersModel.findOne({
@@ -183,6 +185,7 @@ app.post('/delete', async (req, res) => {
     res.redirect('/meal-plan');
 });
 
+// Delete all meals
 app.post('/deleteAll', async (req, res) => {
     const mealId = req.body;
     const userId = await usersModel.findOne({
