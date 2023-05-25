@@ -2,7 +2,7 @@
 
 ## Attributions
 
-The following lines are from a COMP2537 assignment: <br>
+The following lines are from [COMP2537 assignment 1](https://github.com/jyoonbcit/comp2537-assignment1/blob/master/app.js): <br>
 
 - index.js: 77 to 119
 - index.js: 134 to 178
