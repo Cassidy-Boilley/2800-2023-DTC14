@@ -77,10 +77,22 @@ app.get('/meal-plan', async (req, res) => {
             user_id: userId._id
         });
 
+        const mealplanItems = result.map((mealplan) => mealplan.item);
+        const mealplanRestaurants = result.map((mealplan) => mealplan.restaurant);
+
+        const descriptions = await fastfoodCollection.find(
+            {
+                item: { $in: mealplanItems },
+                restaurant: { $in: mealplanRestaurants }
+            },
+            { description: 1 }
+        );
+
+        const descriptionArray = descriptions.map((desc) => desc.description);
+
         const username = req.session.loggedName;
 
-        const startPrompt = `Write a paragraph of less than 120 words which greets a user named ${username}, tells him that" +
-            the following list is his saved meals, and summarizes the list`
+        const startPrompt = `Write a paragraph of less than 120 words which greets a user named ${username}, tells him that the following list is his saved meals, and summarizes the list`;
 
         async function runCompletion() {
             const completion = await openai.createCompletion({
@@ -88,14 +100,26 @@ app.get('/meal-plan', async (req, res) => {
                 prompt: startPrompt + result,
                 max_tokens: 150
             });
-            console.log(completion.data.choices[0].text)
-            res.render('meal-plan.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, mealplan: result, message: completion.data.choices[0].text, name: userId.name });
+
+            res.render('meal-plan.ejs', {
+                authenticated: req.session.GLOBAL_AUTHENTICATED,
+                mealplan: result,
+                descriptions: descriptionArray,
+                message: completion.data.choices[0].text,
+                name: userId.name
+            });
         }
+
         runCompletion();
     } else {
         res.redirect('/login');
     }
 });
+
+
+
+
+
 
 app.post('/saveMeal', async (req, res) => {
     const mealId = req.body;
