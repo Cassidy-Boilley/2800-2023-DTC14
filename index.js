@@ -232,10 +232,14 @@ app.post("/sendPrompt", (req, res) => {
 });
 
 app.get("/accountsettings", async (req, res) => {
-    const user = await usersModel.findOne({
-        name: req.session.loggedName
-    });
-    res.render('accountsettings.ejs', { user: user, name: user.name });
+    if (req.session.GLOBAL_AUTHENTICATED) {
+        const user = await usersModel.findOne({
+            name: req.session.loggedName
+        });
+        res.render('accountsettings.ejs', { user: user, name: user.name });
+    } else {
+        res.redirect("/login");
+    }
 });
 
 app.get("/chat", async (req, res) => {
