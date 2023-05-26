@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-const databaseSchema = new mongoose.Schema({
+
+//This schema is used for the recommendation page
+const databaseSchema = new mongoose.Schema({ 
     restaurant: String,
     item: String,
     calories: Number,
