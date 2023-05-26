@@ -1,17 +1,17 @@
 // Setup and configuration for the app
-const express = require('express');
-const session = require('express-session');
-const bcrypt = require('bcrypt');
-const usersModel = require('./models/users');
+const express = require("express");
+const session = require("express-session");
+const bcrypt = require("bcrypt");
+const usersModel = require("./models/users");
 const app = express();
-const Joi = require('joi');
+const Joi = require("joi");
 
 //Dotenv Setup
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 dotenv.config();
 
 //MongoDB Setup
-var MongoDBStore = require('connect-mongodb-session')(session);
+var MongoDBStore = require("connect-mongodb-session")(session);
 
 //OpenAI Setup
 const { Configuration, OpenAIApi } = require("openai");
@@ -20,13 +20,13 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-app.set('view engine', 'ejs');
-app.use(express.static('public'));
+app.set("view engine", "ejs");
+app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 
 var dbStore = new MongoDBStore({
     uri: process.env.MDBCONNECTION_STRING,
-    collection: 'sessions'
+    collection: "sessions"
 });
 
 //Session Validation
@@ -39,7 +39,7 @@ app.use(session({
 }));
 
 //Homepage
-app.get('/', async (req, res) => {
+app.get("/", async (req, res) => {
     const result = await usersModel.findOne({
         email: req.session.loggedEmail
     })
@@ -48,8 +48,8 @@ app.get('/', async (req, res) => {
     let welcomeMessage = ""
     if (result !== null) {
         name = result.name;
-        if (name.toLowerCase() === 'chris') {
-            name = 'PythonLover3000';
+        if (name.toLowerCase() === "chris") {
+            name = "PythonLover3000";
         }
         //ChatGPT welcome message
         const welcome = await openai.createCompletion({
@@ -66,13 +66,13 @@ app.get('/', async (req, res) => {
         max_tokens: 150    
     });
 
-    res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: name, intro: introduction.data.choices[0].text, welcomeMessage: welcomeMessage })
+    res.render("index.ejs", { authenticated: req.session.GLOBAL_AUTHENTICATED, name: name, intro: introduction.data.choices[0].text, welcomeMessage: welcomeMessage })
 }
 );
 
 //Signup page
-app.get('/signup', (req, res) => {
-    res.render('signup.ejs');
+app.get("/signup", (req, res) => {
+    res.render("signup.ejs");
 });
 
 /**
@@ -82,7 +82,7 @@ app.get('/signup', (req, res) => {
  * - Remove type from user model
  * - Update <a> tags to use bootstrap styling
  */
-app.post('/signup', async (req, res) => {
+app.post("/signup", async (req, res) => {
     try {
         const schema = Joi.object({
             name: Joi.string().regex(/^[\w\-\s]+$/).max(20).required(),
@@ -94,7 +94,7 @@ app.post('/signup', async (req, res) => {
     } catch (err) {
         res.send(`
         <h1> ${err.details[0].message} </h1>
-        <a class='btn btn-primary' href='/signup'> Try again. </a>
+        <a class="btn btn-primary" href="/signup"> Try again. </a>
         `);
         return;
     };
@@ -113,11 +113,11 @@ app.post('/signup', async (req, res) => {
                 resetTokenExpiration: undefined
             });
             await newUser.save();
-            res.redirect('/login');
+            res.redirect("/login");
         } else {
             res.send(`
             <h1> Email already exists. </h1>
-            <a class='btn btn-primary' href='/signup'> Try again. </a>
+            <a class="btn btn-primary" href="/signup"> Try again. </a>
             `)
         }
     } catch (err) {
@@ -129,8 +129,8 @@ app.post('/signup', async (req, res) => {
 });
 
 //Login page
-app.get('/login', (req, res) => {
-    res.render('login.ejs');
+app.get("/login", (req, res) => {
+    res.render("login.ejs");
 });
 
 /**
@@ -142,7 +142,7 @@ app.get('/login', (req, res) => {
  * - Update <a> tags to use bootstrap styling
  * - Removed loggedType from session
  */
-app.post('/login', async (req, res) => {
+app.post("/login", async (req, res) => {
     try {
         const schema = Joi.object({
             email: Joi.string().email().required(),
@@ -153,7 +153,7 @@ app.post('/login', async (req, res) => {
         console.log(err);
         res.send(`
         <h1> ${err.details[0].message} </h1>
-        <a class='btn btn-primary' href='/login'> Try again. </a>
+        <a class="btn btn-primary" href="/login"> Try again. </a>
         `)
         return;
     };
@@ -166,7 +166,7 @@ app.post('/login', async (req, res) => {
         if (result === null) {
             res.send(`
             <h1> Invalid email/password combination. </h1>
-            <a class='btn btn-primary' href='/login'> Try again. </a>
+            <a class="btn btn-primary" href="/login"> Try again. </a>
             `);
         } else if (bcrypt.compareSync(req.body.password, result?.password)) {
             req.session.GLOBAL_AUTHENTICATED = true;
@@ -176,11 +176,11 @@ app.post('/login', async (req, res) => {
             var hour = 3600000;
             req.session.cookie.expires = new Date(Date.now() + (hour));
             req.session.cookie.maxAge = hour;
-            res.redirect('/');
+            res.redirect("/");
         } else {
             res.send(`
             <h1> Invalid email/password combination. </h1>
-            <a class='btn btn-primary' href='/login'> Try again. </a>
+            <a class="btn btn-primary" href="/login"> Try again. </a>
             `);
         }
     } catch (err) {
@@ -200,7 +200,7 @@ app.get("/accountsettings", async (req, res) => {
         const user = await usersModel.findOne({
             name: req.session.loggedName
         });
-        res.render('accountsettings.ejs', { user: user, name: user.name });
+        res.render("accountsettings.ejs", { user: user, name: user.name });
     } else {
         res.redirect("/login");
     }
@@ -228,7 +228,7 @@ app.post("/update-profile", async (req, res) => {
         console.log(err);
         res.send(`
         <h1> ${err.details[0].message} </h1>
-        <a class='btn btn-primary' href='/accountsettings'> Try again. </a>
+        <a class="btn btn-primary" href="/accountsettings"> Try again. </a>
         `)
         return;
     };
