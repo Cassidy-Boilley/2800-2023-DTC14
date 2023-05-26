@@ -132,14 +132,4 @@ app.post('/save', async (req, res) => { // A POST action that saves a food item 
 
 });
 
-app.get("*", async (req, res) => { // A GET action that renders a 404 page if the user tries to access a page that does not exist
-  if(req.session.GLOBAL_AUTHENTICATED) {
-    const user = await usersModel.findOne({
-    email: req.session.loggedEmail
-  })
-    res.status(404).render('404.ejs', { name: user.name }); // Render 404 page
-  } else {
-    res.redirect('/login'); // Redirect to login page if user is not logged in
-  } 
-});
 module.exports = app;
