@@ -1,12 +1,19 @@
+//Variable Setup
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const usersModel = require('./models/users');
 const app = express();
 const Joi = require('joi');
+
+//Dotenv Setup
 const dotenv = require('dotenv');
 dotenv.config();
+
+//MongoDB Setup
 var MongoDBStore = require('connect-mongodb-session')(session);
+
+//OpenAI Setup
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
@@ -22,6 +29,7 @@ var dbStore = new MongoDBStore({
     collection: 'sessions'
 });
 
+//Session Validation
 app.use(session({
     secret: process.env.MDBCONNECTION_STRING,
     store: dbStore,
@@ -30,6 +38,7 @@ app.use(session({
     expires: new Date(Date.now() + 3600000)
 }));
 
+//Homepage
 app.get('/', async (req, res) => {
     const result = await usersModel.findOne({
         email: req.session.loggedEmail
@@ -42,17 +51,15 @@ app.get('/', async (req, res) => {
         if (name.toLowerCase() === 'chris') {
             name = 'PythonLover3000';
         }
+        //ChatGPT welcome message
         const welcome = await openai.createCompletion({
             model: "text-davinci-003",
             prompt: "Reword the following paragraph in 10 words:\n" + "we are so glad to see you again," + name + "!",
             max_tokens: 150
         });
         welcomeMessage = welcome.data.choices[0].text
-        // res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: name });
-    // } else {
-        // res.render('index.ejs', { authenticated: req.session.GLOBAL_AUTHENTICATED, name: "" });
     }
-
+    //ChatGPT app description
     const introduction = await openai.createCompletion({
         model: "text-davinci-003",
         prompt: "Reword the following paragraph:\n" + "Welcome to the app that remembers your fast food history and gives you new meals to try!",
@@ -63,6 +70,7 @@ app.get('/', async (req, res) => {
 }
 );
 
+//Signup page
 app.get('/signup', (req, res) => {
     res.render('signup.ejs');
 });
@@ -120,6 +128,7 @@ app.post('/signup', async (req, res) => {
     }
 });
 
+//Login page
 app.get('/login', (req, res) => {
     res.render('login.ejs');
 });
@@ -189,6 +198,7 @@ app.post("/sendPrompt", (req, res) => {
     res.redirect("/");
 });
 
+//Account Settings Page
 app.get("/accountsettings", async (req, res) => {
     if (req.session.GLOBAL_AUTHENTICATED) {
         const user = await usersModel.findOne({
@@ -198,21 +208,6 @@ app.get("/accountsettings", async (req, res) => {
     } else {
         res.redirect("/login");
     }
-});
-
-app.get("/chat", async (req, res) => {
-    const user = await usersModel.findOne({
-        name: req.session.loggedName
-    });
-    
-    async function runCompletion() {
-        const completion = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: "How are you today?",
-        });
-        res.render('chat.ejs', { message: completion.data.choices[0].text, user: user.name, name: user.name });
-    }
-    runCompletion();
 });
 
 app.post("/update-profile", async (req, res) => {
