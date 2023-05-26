@@ -62,6 +62,6 @@ function get_html_message() {
 
 
 
-send_password_reset_mail('Test', process.env.OAUTH_USER)
+//send_password_reset_mail('Test', process.env.OAUTH_USER)
 
 module.exports = app;
