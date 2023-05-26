@@ -107,7 +107,7 @@ C:.
  nodemailer: 6.9.2
  openai: 3.2.1
 
-### To install these, use the command npm i 'dependency name'. ex: npm i bcrypt. PS: The installation order² does not matter
+### To install these, use the command npm i 'dependency name'. ex: npm i bcrypt. PS: The installation order does not matter
 
 ### When using localhost, use the command nodemon server.js
 
