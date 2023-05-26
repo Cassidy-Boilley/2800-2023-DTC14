@@ -28,10 +28,12 @@ cyclic.sh
 C:.
 │   .env
 │   .gitignore
+│   email.js
 │   index.js
 │   meal-plan.js
 │   package-lock.json
 │   package.json
+│   passwords.txt
 │   procfile
 │   README.md
 │   recommendations.js
@@ -63,7 +65,7 @@ C:.
     │   index.ejs
     │   login.ejs
     │   meal-plan.ejs
-    |   password-reset-form.ejs
+    │   password-reset-form.ejs
     │   password-reset.ejs
     │   recommendations.ejs
     │   signup.ejs
@@ -105,7 +107,9 @@ C:.
  nodemailer: 6.9.2
  openai: 3.2.1
 
- ### When using localhost, use the command nodemon server.js
+### To install these, use the command npm i 'dependency name'. ex: npm i bcrypt. PS: The installation order² does not matter
+
+### When using localhost, use the command nodemon server.js
 
 # CREDITS, REFERENCES, LICENSES
 
@@ -116,7 +120,7 @@ The following lines are from [COMP2537 assignment 1](https://github.com/jyoonbci
 - index.js: 77 to 119
 - index.js: 134 to 178
 
-With the following adjustments made: <br>
+With the following adjustments made: <br>²
 
 For lines 77 to 119:
 
