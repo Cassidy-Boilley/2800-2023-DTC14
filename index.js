@@ -206,6 +206,7 @@ app.get("/accountsettings", async (req, res) => {
     }
 });
 
+//Profile Update Route
 app.post("/update-profile", async (req, res) => {
     const profileInfo = req.body;
     console.log(profileInfo);
