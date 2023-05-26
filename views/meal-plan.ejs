@@ -26,7 +26,7 @@
 
             const mealId = event.target.elements.mealId.value;
             const confirmationModal = document.getElementById('confirmationModal');
-            const mealIdInput = document.getElementById('mealIdInput');
+            const mealIdInput = document.getElementById('deleteMealIdInput');
 
             mealIdInput.value = mealId;
 
@@ -195,7 +195,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <form action="/delete" method="post" class="d-inline">
-                                                    <input type="hidden" id="mealIdInput" name="mealId" value="">
+                                                    <input type="hidden" id="deleteMealIdInput" name="mealId" value="">
                                                     <button type="submit" class="btn btn-danger">Remove</button>
                                                 </form>
                                                 <button type="button" class="btn btn-secondary"
