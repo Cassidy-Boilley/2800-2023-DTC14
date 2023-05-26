@@ -189,6 +189,20 @@ app.get("/password-recovery", (req, res) => {
 app.post("/password-recovery", async (req, res) => {
     const inputEmail = req.body;
 
+    const schema = Joi.object({
+        email: Joi.string().email().required()
+    });
+
+    try {
+        await schema.validateAsync(inputEmail);
+    } catch (err) {
+        res.send(`
+        <h1>${err.details[0].message}</h1>
+        <a class='btn btn-primary' href='/password-recovery'>Try again.</a>
+        `);
+        return;
+    }
+
     const result = await usersModel.findOne({
         email: inputEmail.email
     });
