@@ -1,4 +1,4 @@
-//Variable Setup
+// Setup and configuration for the app
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
@@ -249,7 +249,5 @@ app.post("/update-profile", async (req, res) => {
         res.send("An error happened, please try again");
     }
 });
-
-
 
 module.exports = app;

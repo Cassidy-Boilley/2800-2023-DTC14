@@ -45,6 +45,7 @@ app.post("/password-reset", async (req, res) => {
 
     const user = await usersModel.findOne({ email });
 
+    // Generate reset password link token
     if (user) {
         const randomString = crypto.randomBytes(20).toString("hex");
         const resetToken = crypto
@@ -70,6 +71,7 @@ app.post("/password-reset", async (req, res) => {
             },
         });
 
+        // HTML message for password reset email
         function getHtmlMessage() {
             return `
                 <h1> Hey there, </h1>
@@ -81,6 +83,7 @@ app.post("/password-reset", async (req, res) => {
             `;
         }
 
+        // Password reset email fields
         const mailOptions = {
             from: `ChatBLT Admin <${process.env.OAUTH_USER}>`,
             to: email,
@@ -88,6 +91,7 @@ app.post("/password-reset", async (req, res) => {
             html: getHtmlMessage(),
         };
 
+        // Send password reset email
         transport.sendMail(mailOptions, (err, result) => {
             if (err) {
                 console.log(err);
@@ -154,8 +158,6 @@ app.post("/password-reset/:token", async (req, res) => {
         `);
     }
 });
-
-//send_password_reset_mail('Test', process.env.OAUTH_USER)
 
 app.get("*", async (req, res) => { // A GET action that renders a 404 page if the user tries to access a page that does not exist
     if (req.session.GLOBAL_AUTHENTICATED) {
