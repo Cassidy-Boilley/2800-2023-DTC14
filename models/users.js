@@ -8,7 +8,9 @@ const usersSchema = new mongoose.Schema({
     name: String,
     email: String,
     password: String,
-    city: String
+    city: String,
+    resetToken: String,
+    resetTokenExpiration: Date
 });
 const usersModel = mongoose.model('users', usersSchema);
 
