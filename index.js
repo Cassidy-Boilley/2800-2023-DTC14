@@ -188,12 +188,8 @@ app.post('/login', async (req, res) => {
     }
 });
 
+//Logout Route
 app.post("/logout", (req, res) => {
-    req.session.destroy();
-    res.redirect("/");
-});
-
-app.post("/sendPrompt", (req, res) => {
     req.session.destroy();
     res.redirect("/");
 });
