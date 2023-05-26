@@ -189,6 +189,20 @@ app.get("/password-recovery", (req, res) => {
 app.post("/password-recovery", async (req, res) => {
     const inputEmail = req.body;
 
+    const schema = Joi.object({
+        email: Joi.string().email().required()
+    });
+
+    try {
+        await schema.validateAsync(inputEmail);
+    } catch (err) {
+        res.send(`
+        <h1>${err.details[0].message}</h1>
+        <a class='btn btn-primary' href='/password-recovery'>Try again.</a>
+        `);
+        return;
+    }
+
     const result = await usersModel.findOne({
         email: inputEmail.email
     });
@@ -208,16 +222,28 @@ app.get("/password-reset", (req, res) => {
 });
 
 app.post("/password-reset", async (req, res) => {
-    const inputEmail = req.body;
-    const inputPassword = req.body;
-    const hashedPassword = await bcrypt.hash(inputPassword.password, 10);
+    const { email, password } = req.body;
 
-    console.log(inputEmail);
-    console.log(inputPassword.password);
+    const schema = Joi.object({
+        email: Joi.string().email().required(),
+        password: Joi.string().max(20).required()
+    });
+
+    try {
+        await schema.validateAsync({ email, password });
+    } catch (err) {
+        res.send(`
+        <h1>${err.details[0].message}</h1>
+        <a class='btn btn-primary' href='/password-reset'>Try again.</a>
+        `);
+        return;
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     try {
         const result = await usersModel.updateOne(
-            { email: inputEmail.email },
+            { email: email },
             { $set: { password: hashedPassword } }
         );
         res.redirect("/login");
@@ -225,6 +251,7 @@ app.post("/password-reset", async (req, res) => {
         res.send("An error happened, please try again");
     }
 });
+
 
 app.post("/sendPrompt", (req, res) => {
     req.session.destroy();
