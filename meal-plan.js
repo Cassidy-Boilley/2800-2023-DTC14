@@ -54,11 +54,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Meal plan page
 app.get('/fast-food', async (req, res) => {
+    // Check if user is logged in
     if (req.session.GLOBAL_AUTHENTICATED) {
+        // Get user's name
         const userId = await usersModel.findOne({
             email: req.session.loggedEmail
         });
 
+        // Get all fast food items
         const result = await fastfoodCollection.find();
         res.render('fast-food.ejs', { fastfood: result, name: userId.name });
     } else {
@@ -68,7 +71,9 @@ app.get('/fast-food', async (req, res) => {
 
 // Meal plan
 app.get('/meal-plan', async (req, res) => {
+    // Check if user is logged in
     if (req.session.GLOBAL_AUTHENTICATED) {
+        //  Get user's id
         const userId = await usersModel.findOne({
             email: req.session.loggedEmail
         });
@@ -80,6 +85,8 @@ app.get('/meal-plan', async (req, res) => {
 
         const mealplanItems = result.map((mealplan) => mealplan.item);
         const mealplanRestaurants = result.map((mealplan) => mealplan.restaurant);
+
+        // Get descriptions of all meals in the meal plan
         const descriptions = await fastfoodCollection.find(
             {
                 item: { $in: mealplanItems },
@@ -95,9 +102,9 @@ app.get('/meal-plan', async (req, res) => {
         }));
 
         const username = req.session.loggedName;
-
         const startPrompt = `Write a paragraph of less than 120 words which greets a user named ${username}, tells him that the following list is his saved meals, and summarizes the list`;
 
+        // Make API call
         async function runCompletion() {
             const completion = await openai.createCompletion({
                 model: "text-davinci-003",
@@ -122,16 +129,20 @@ app.get('/meal-plan', async (req, res) => {
 
 // Add to meal plan
 app.post('/saveMeal', async (req, res) => {
+    // Get meal's id
     const mealId = req.body;
 
+    // Get user's id
     const userId = await usersModel.findOne({
         email: req.session.loggedEmail
     });
 
+    // Get meal's info
     const result = await fastfoodCollection.findOne({
         _id: mealId.mealId
     });
 
+    // Check if meal is already in meal plan
     try {
         const existingMeal = await mealplanCollection.findOne({
             restaurant: result.restaurant,
@@ -139,9 +150,11 @@ app.post('/saveMeal', async (req, res) => {
             user_id: userId._id,
         });
 
+        // If meal is already in meal plan, redirect to meal plan page
         if (existingMeal) {
             res.redirect('/fast-food');
         } else {
+            // If meal is not in meal plan, add it to meal plan
             const addToMealPlan = new mealplanCollection({
                 restaurant: result.restaurant,
                 item: result.item,
@@ -163,6 +176,7 @@ app.post('/saveMeal', async (req, res) => {
                 vegan: result.vegan,
                 user_id: userId._id,
             });
+            // Save meal to meal plan
             await addToMealPlan.save();
             res.redirect('/fast-food');
         }
@@ -173,11 +187,14 @@ app.post('/saveMeal', async (req, res) => {
 
 // Delete a meal from the meal plan
 app.post('/delete', async (req, res) => {
+    // Get meal's id
     const mealId = req.body.mealId;
+    // Get user's id
     const userId = await usersModel.findOne({
         email: req.session.loggedEmail
     });
 
+    // Delete meal from meal plan
     await mealplanCollection.deleteOne({
         _id: mealId,
         user_id: userId._id
@@ -187,11 +204,14 @@ app.post('/delete', async (req, res) => {
 
 // Delete all meals
 app.post('/deleteAll', async (req, res) => {
+    // Get user's id
     const mealId = req.body;
+    // Get user's id
     const userId = await usersModel.findOne({
         email: req.session.loggedEmail
     });
 
+    // Delete all meals from meal plan
     await mealplanCollection.deleteMany({
         user_id: userId._id,
     });
