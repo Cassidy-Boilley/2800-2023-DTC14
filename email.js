@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const usersModel = require('./models/users');
 const Joi = require('joi');
+const bcrypt = require('bcrypt');
 
 // dotenv setup
 const dotenv = require('dotenv');
