@@ -14,7 +14,7 @@ Our team, DTC-14, is developing an app to help busy people choose fast food meal
 - CSS
 
 ## Backend
- - Javascrupt
+ - Javascript
  - Node.js
 
 ## Database
@@ -58,12 +58,13 @@ C:.
     │   404.ejs
     │   accountsettings.ejs
     │   chat.ejs
+    |   email-not-found.ejs
     │   fast-food.ejs
     │   filter.ejs
     │   index.ejs
     │   login.ejs
     │   meal-plan.ejs
-    │   password-recovery.ejs
+    |   password-reset-form.ejs
     │   password-reset.ejs
     │   recommendations.ejs
     │   signup.ejs
@@ -98,9 +99,11 @@ C:.
  express: 4.18.2
  express-mongoose: 0.1.0
  express-session: 1.17.3
+ googleapis: 118.0.0
  joi: 17.9.2
  mongodb: 5.5.0
  mongoose: 7.2.1
+ nodemailer: 6.9.2
  openai: 3.2.1
 
  ### When using localhost, use the command nodemon server.js
