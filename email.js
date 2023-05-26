@@ -95,10 +95,16 @@ app.post("/password-reset", async (req, res) => {
             }
             transport.close();
         });
-
-        res.send("Password reset email sent. Check your inbox.");
+        
+        res.send(`
+        <h1>Password reset email sent. Check your inbox.</h1>
+        <a class='btn btn-primary' href='/'> Home </a>
+        `);
     } else {
-        res.send("Email not found.");
+        res.send(`
+        <h1>Email not found.</h1>
+        <a class='btn btn-primary' href='/password-reset'>Try again.</a>
+        `);
     }
 });
 
