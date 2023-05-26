@@ -95,7 +95,7 @@ app.post("/password-reset", async (req, res) => {
             }
             transport.close();
         });
-        
+
         res.send(`
         <h1>Password reset email sent. Check your inbox.</h1>
         <a class='btn btn-primary' href='/'> Home </a>
@@ -142,9 +142,15 @@ app.post("/password-reset/:token", async (req, res) => {
         user.resetToken = undefined;
         user.resetTokenExpiration = undefined;
         await user.save();
-        res.send("Password reset successful.");
+        res.send(`
+        <h1>Password reset successful.</h1>
+        <a class='btn btn-primary' href='/login'>Login</a>
+        `);
     } else {
-        res.send("Invalid or expired token.");
+        res.send(`
+        <h1>Invalid or expired token.</h1>
+        <a class='btn btn-primary' href='/password-reset'>Try again.</a>
+        `);
     }
 });
 
