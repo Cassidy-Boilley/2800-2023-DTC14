@@ -262,6 +262,28 @@ app.post("/update-profile", async (req, res) => {
     console.log(profileInfo);
 
     try {
+        const schema = Joi.object({
+            name: Joi.string().required(),
+            email: Joi.string().email().required(),
+            password: Joi.string().max(20).required(),
+            city: Joi.string().required()
+        });
+        await schema.validateAsync({ 
+            name: profileInfo.name, 
+            email: profileInfo.email, 
+            password: profileInfo.password, 
+            city: profileInfo.city 
+        });
+    } catch (err) {
+        console.log(err);
+        res.send(`
+        <h1> ${err.details[0].message} </h1>
+        <a class='btn btn-primary' href='/accountsettings'> Try again. </a>
+        `)
+        return;
+    };
+
+    try {
         const result = await usersModel.updateOne(
             { name: req.session.loggedName },
             {
