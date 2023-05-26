@@ -1,3 +1,4 @@
+// Setup and configuration for the app
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
@@ -22,6 +23,7 @@ var dbStore = new MongoDBStore({
     collection: 'sessions'
 });
 
+// Routes
 app.use(session({
     secret: process.env.MDBCONNECTION_STRING,
     store: dbStore,
@@ -257,7 +259,5 @@ app.post("/update-profile", async (req, res) => {
         res.send("An error happened, please try again");
     }
 });
-
-
 
 module.exports = app;

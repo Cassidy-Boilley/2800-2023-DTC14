@@ -1,3 +1,4 @@
+// Setup and configuration for the app
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -20,7 +21,7 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// USED FOR DESCRITPION GENERATION
+// USED FOR DESCRIPTION GENERATION
 // app.get('/one-time', async (req, res) => {
 //     const result = await fastfoodCollection.find({ description: { $exists: false }})
 

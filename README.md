@@ -117,18 +117,18 @@ C:.
 
 The following lines are from [COMP2537 assignment 1](https://github.com/jyoonbcit/comp2537-assignment1/blob/master/app.js): <br>
 
-- index.js: 77 to 119
-- index.js: 134 to 178
+- index.js: 79 to 123
+- index.js: 138 to 182
 
 With the following adjustments made: <br>²
 
-For lines 77 to 119:
+For lines 79 to 123:
 
 - Add field city to user model
 - Remove type from user model
 - Update <a> tags to use bootstrap styling
 
-For lines 134 to 178:
+For lines 138 to 182:
 
 - Remove console.log message with password
 - Remove assignment of schema validation to a variable

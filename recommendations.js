@@ -1,3 +1,4 @@
+// Setup and configuration for the app
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
@@ -20,8 +21,7 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-
-
+// Routes
 app.get('/recommendations', async (req, res) => {
   if (req.session.GLOBAL_AUTHENTICATED) {// Check if user is logged in
     
