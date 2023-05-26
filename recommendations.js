@@ -15,6 +15,7 @@ const mealplanCollection = require('./models/mealplanCollection.js');
 
 let averageCalories = 0;
 
+//OpenAI Config
 const { Configuration, OpenAIApi } = require("openai"); // OpenAI API Setup
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,  
@@ -62,7 +63,8 @@ app.get('/recommendations', async (req, res) => {
   }
 });
 
-app.post('/isVegan', async (req, res) => { // A GET action that recommends vegan food items
+//Vegan Filter Route
+app.post('/isVegan', async (req, res) => { // A POST action that recommends vegan food items
   if(req.session.GLOBAL_AUTHENTICATED){ // Check if user is logged in
     const user = await usersModel.findOne({ // Find user
     email: req.session.loggedEmail
