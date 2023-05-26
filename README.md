@@ -2,13 +2,23 @@
 
 ## Attributions
 
-The following lines are from a COMP2537 assignment: <br>
-index.js: <br>
-/models/users.js <br>
+The following lines are from [COMP2537 assignment 1](https://github.com/jyoonbcit/comp2537-assignment1/blob/master/app.js): <br>
 
-- Removed a field from the user model
+- index.js: 77 to 119
+- index.js: 134 to 178
 
 With the following adjustments made: <br>
-/models/users.js: <br>
 
-- Removed a field from the user model
+For lines 77 to 119:
+
+- Add field city to user model
+- Remove type from user model
+- Update <a> tags to use bootstrap styling
+
+For lines 134 to 178:
+
+- Remove console.log message with password
+- Remove assignment of schema validation to a variable
+- Update redirect link on login success
+- Update <a> tags to use bootstrap styling
+- Removed loggedType from session

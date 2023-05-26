@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link href="/css/basic.css" rel="stylesheet">
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var user = "<%= name %>";
+
+            if (user.toLowerCase() === 'chris') {
+                var darkCSS = document.createElement('link');
+                darkCSS.rel = 'stylesheet';
+                darkCSS.href = '/css/dark.css';  
+                document.head.appendChild(darkCSS);
+            }
+        });
+
+        // Pagination
+        window.addEventListener('DOMContentLoaded', function () {
+            var itemsPerPage = 10; 
+
+            var mealCards = document.querySelectorAll('.meal-card');
+            var pagination = document.getElementById('pagination');
+            var currentPage = 1; 
+
+            function showPage(page) {
+                var startIndex = (page - 1) * itemsPerPage;
+                var endIndex = page * itemsPerPage;
+
+                // Get the search query
+                var searchTerm = document.getElementById('search-input').value.toLowerCase();
+
+                // Filter the meal cards based on the search query
+                var filteredMealCards = Array.from(mealCards).filter(function (mealCard) {
+                    var mealTitle = mealCard.querySelector('.card-title').textContent.toLowerCase();
+                    var mealRestaurant = mealCard.querySelector('.card-text').textContent.toLowerCase();
+
+                    return mealTitle.includes(searchTerm) || mealRestaurant.includes(searchTerm);
+                });
+
+                // Hide all meal cards
+                mealCards.forEach(function (mealCard) {
+                    mealCard.style.display = 'none';
+                });
+
+                // Display the filtered meal cards for the current page
+                for (var i = startIndex; i < endIndex; i++) {
+                    var filteredMealCard = filteredMealCards[i];
+                    if (filteredMealCard) {
+                        filteredMealCard.style.display = 'block';
+                    }
+                }
+            }
+
+            // Event listener for search input
+            var searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', function () {
+                currentPage = 1; // Reset to the first page when the search input changes
+                showPage(currentPage);
+                createPaginationLinks();
+            });
+
+            function createPaginationLinks() {
+                var searchTerm = searchInput.value.toLowerCase();
+
+                // Filter the meal cards based on the search query
+                var filteredMealCards = Array.from(mealCards).filter(function (mealCard) {
+                    var mealTitle = mealCard.querySelector('.card-title').textContent.toLowerCase();
+                    var mealRestaurant = mealCard.querySelector('.card-text').textContent.toLowerCase();
+
+                    return mealTitle.includes(searchTerm) || mealRestaurant.includes(searchTerm);
+                });
+
+                var totalItems = filteredMealCards.length;
+                var totalPages = Math.ceil(totalItems / itemsPerPage);
+                var paginationHTML = '';
+
+                paginationHTML += '<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="changePage(1)">First</a></li>';
+
+                if (currentPage > 1) {
+                    paginationHTML += '<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="changePage(' + (currentPage - 1) + ')">Previous</a></li>';
+                }
+
+                // Numbered page buttons
+                var minPage = Math.max(1, currentPage - 2);
+                var maxPage = Math.min(totalPages, currentPage + 2);
+
+                if (maxPage - minPage < 4) {
+                    if (maxPage === totalPages) {
+                        minPage = Math.max(1, maxPage - 4);
+                    } else {
+                        maxPage = Math.min(totalPages, minPage + 4);
+                    }
+                }
+
+                for (var i = minPage; i <= maxPage; i++) {
+                    if (i === currentPage) {
+                        paginationHTML += '<li class="page-item active"><a class="page-link" href="javascript:void(0)">' + i + '</a></li>';
+                    } else {
+                        paginationHTML += '<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="changePage(' + i + ')">' + i + '</a></li>';
+                    }
+                }
+
+                if (currentPage < totalPages) {
+                    paginationHTML += '<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="changePage(' + (currentPage + 1) + ')">Next</a></li>';
+                }
+
+                paginationHTML += '<li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="changePage(' + totalPages + ')">Last</a></li>';
+
+                pagination.innerHTML = paginationHTML;
+            }
+
+
+            window.changePage = function (page) {
+                currentPage = page;
+                showPage(currentPage);
+                createPaginationLinks();
+            };
+
+            showPage(currentPage);
+            createPaginationLinks();
+
+        });
+    </script>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/82e4826c76.js" crossorigin="anonymous"></script>
+
+    <% if (name.toLowerCase()==='chris' ) { %>
+        <%- include ('partials/dark-header.ejs') %>
+            <% } else { %>
+                <%- include ('partials/header.ejs') %>
+                    <% } %>
+
+                        <!-- Search Bar -->
+                        <form id="search-bar" class="d-flex p-3" role="search"
+                            style="max-width: 1320px; margin-right: auto; margin-left: auto;">
+                            <input class="form-control me-2" id="search-input" type="search" placeholder="Search"
+                                aria-label="Search">
+                            <button class="btn btn-outline-primary" type="submit">Search</button>
+                        </form>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Sort By
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <form method="POST" action="/isVegan">
+                                        <button class="dropdown-item" type="submit">Vegan Dishes</button>
+                                    </form>
+                                </li>
+                        
+                            </ul>
+                        </div>
+                        <hr>
+
+                        <!-- Meal Cards -->
+                        <% fastfood.forEach(function(meal, index) { %>
+                            <section class="meal-card">
+                                <!-- Meal card content -->
+                                <div class="container p-3">
+                                    <div class="card meal-cards">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <%= meal.item%>
+                                            </h5>
+                                            <p class="card-text">
+                                                <%= meal.restaurant%>
+                                            </p>
+                                            <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#<%= meal._id %>">
+                                                See more
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="<%= meal._id %>" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                                <%= meal.restaurant%> - <%= meal.item%>
+                                                            </h1>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <p>Calories: <%= meal.calories%>
+                                                                    </p>
+                                                                    <p>Cal Fat: <%= meal.cal_fat%>
+                                                                    </p>
+                                                                    <p>Total Fat: <%= meal.total_fat%>
+                                                                    </p>
+                                                                    <p>Saturated Fat: <%= meal.sat_fat%>
+                                                                    </p>
+                                                                    <p>Trans Fat: <%= meal.trans_fat%>
+                                                                    </p>
+                                                                    <p>Cholesterol: <%= meal.cholesterol%>
+                                                                    </p>
+                                                                    <p>Sodium: <%= meal.sodium%>
+                                                                    </p>
+                                                                    <p>Carbs: <%= meal.total_carb%>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <p>Fiber: <%= meal.fiber%>
+                                                                    </p>
+                                                                    <p>Sugar: <%= meal.sugar%>
+                                                                    </p>
+                                                                    <p>Protein: <%= meal.protein%>
+                                                                    </p>
+                                                                    <p>Vitamin A: <%= meal.vit_a%>
+                                                                    </p>
+                                                                    <p>Vitamin C: <%= meal.vit_c%>
+                                                                    </p>
+                                                                    <p>Calcium: <%= meal.calcium%>
+                                                                    </p>
+                                                                    <p>Salad: <%= meal.salad%>
+                                                                    </p>
+                                                                    <p>Vegan: <%= meal.vegan%>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Save to Meal Plans Button -->
+                                            <form action="/saveMeal" method="post" class="d-inline">
+                                                <input type="hidden" name="mealId" value="<%= meal._id %>">
+                                                <button class="btn btn-danger" value="meal">Save to Meal
+                                                    Plans</button>
+                                            </form>
+                                            <!-- Description Button -->
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#<%= meal._id %>DescriptionModal">
+                                                Description
+                                            </button>
+                                            <!-- Description Modal -->
+                                            <div class="modal" id="<%= meal._id %>DescriptionModal" tabindex="-1">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Description</h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <%= meal.description %>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <% }) %>
+
+                                <script>
+                                    var searchInput = document.getElementById('search-input');
+                                    var mealCards = document.querySelectorAll('.meal-card');
+
+                                    searchInput.addEventListener('input', function () {
+                                        var searchTerm = searchInput.value.toLowerCase();
+
+                                        mealCards.forEach(function (mealCard) {
+                                            var mealTitle = mealCard.querySelector('.card-title').textContent.toLowerCase();
+                                            var mealRestaurant = mealCard.querySelector('.card-text').textContent.toLowerCase();
+
+                                            if (mealTitle.includes(searchTerm) || mealRestaurant.includes(searchTerm)) {
+                                                mealCard.style.display = 'block';
+                                            } else {
+                                                mealCard.style.display = 'none';
+                                            }
+                                        });
+                                    });
+                                </script>
+
+                                <!-- Pagination -->
+                                <nav>
+                                    <ul id="pagination" class="pagination justify-content-center"></ul>
+                                </nav>
+
+                                <% if (name.toLowerCase()==='chris' ) { %>
+                                    <%- include ('partials/dark-footer.ejs') %>
+                                        <% } else { %>
+                                            <%- include ('partials/footer.ejs') %>
+                                                <% } %>
+</body>
+
+</html>
