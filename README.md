@@ -58,7 +58,6 @@ C:.
     │   404.ejs
     │   accountsettings.ejs
     │   chat.ejs
-    |   email-not-found.ejs
     │   fast-food.ejs
     │   filter.ejs
     │   index.ejs
